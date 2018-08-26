@@ -10,7 +10,6 @@
     ]
   },
   "rules": {
-    "interface-name": false,
-    "member-access": [true, "no-public"]
+    "interface-name": false
   }
 }
