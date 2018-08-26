@@ -16,10 +16,14 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 @Component
 export default class ImgView extends Vue {
-  @Prop() private level!:number
-  @Prop() private scale!:number
-  @Prop() private type!:string
-  @Prop() private file!:File
+  @Prop()
+  private level!: number
+  @Prop()
+  private scale!: number
+  @Prop()
+  private type!: string
+  @Prop()
+  private file!: File
   private beforeWidth: number | null = null
   private beforeHeight: number | null = null
   private get beforeSize() {
@@ -37,9 +41,9 @@ export default class ImgView extends Vue {
   private get beforeSizeInKB() {
     return this.toKB(this.beforeSize)
   }
-  @Watch('beforeUrl', {immediate: true})
+  @Watch('beforeUrl', { immediate: true })
   private onBeforeUrlChange(url: string) {
-    const imgElem = new Image
+    const imgElem = new Image()
     imgElem.src = url
     imgElem.onload = () => {
       this.beforeWidth = imgElem.width
