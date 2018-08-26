@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prettier": "prettier --write src/**/*"
   },
   "dependencies": {
     "vue": "^2.5.17",
@@ -15,8 +16,10 @@
   "devDependencies": {
     "@vue/cli-plugin-typescript": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
+    "prettier": "^1.14.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.0",
     "vue-template-compiler": "^2.5.17"
   }
