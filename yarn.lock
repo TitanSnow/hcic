@@ -21,9 +21,15 @@
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/@nodelib/fs.stat/download/@nodelib/fs.stat-1.1.1.tgz#53f349bb986ab273d601175aa1b25a655ab90ee3"
 
-"@types/node@^10.5.2":
+"@types/node@*", "@types/node@^10.5.2":
   version "10.9.2"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-10.9.2.tgz#f0ab8dced5cd6c56b26765e1c0d9e4fdcc9f2a00"
+
+"@types/uuid@^3.4.3":
+  version "3.4.3"
+  resolved "http://registry.npm.taobao.org/@types/uuid/download/@types/uuid-3.4.3.tgz#121ace265f5569ce40f4f6d0ff78a338c732a754"
+  dependencies:
+    "@types/node" "*"
 
 "@vue/cli-overlay@^3.0.0":
   version "3.0.1"

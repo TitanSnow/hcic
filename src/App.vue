@@ -7,21 +7,21 @@
             <p>
               <label>
                 <span>Quality:</span>
-                <input type="range" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl">
-                <input type="number" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl">
+                <input type="range" min="0" max="1" step="0.01" v-model.number="level" class="hola-form-ctrl">
+                <input type="number" min="0" max="1" step="0.01" v-model.number="level" class="hola-form-ctrl">
               </label>
             </p>
             <p>
               <label>
                 <span>Scale:</span>
-                <input type="range" min="0" max="2" step="0.01" v-model.number="config.scale" class="hola-form-ctrl">
-                <input type="number" min="0" max="2" step="0.01" v-model.number="config.scale" class="hola-form-ctrl">
+                <input type="range" min="0" max="2" step="0.01" v-model.number="scale" class="hola-form-ctrl">
+                <input type="number" min="0" max="2" step="0.01" v-model.number="scale" class="hola-form-ctrl">
               </label>
             </p>
             <p>
               <label>
                 <span>Type:</span>
-                <select v-model="config.type" class="hola-form-ctrl">
+                <select v-model="type" class="hola-form-ctrl">
                   <option value="image/webp">WebP</option>
                   <option value="image/jpeg">JPEG</option>
                 </select>
@@ -41,20 +41,37 @@
           </div>
         </div>
       </div>
+      <img-view
+        :level="level"
+        :scale="scale"
+        :type="type"
+        :file="img.file"
+        :key="img.key"
+        v-for="img in images"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import uuid4 from 'uuid/v4'
+import ImgView from '@/components/ImgView.vue'
 
-@Component
+class Image {
+  constructor(
+    public file: File,
+    public key = uuid4()
+  ) {}
+}
+
+@Component({components: {ImgView}})
 export default class App extends Vue {
-  private config = {
-    level: 0.92,
-    scale: 1,
-    type: 'image/webp',
-  }
+  private level = 0.92
+  private scale = 1
+  private type = 'image/webp'
+
+  private images: Image[] = []
+
   private createFileInputElement() {
     const elem = document.createElement('input')
     elem.type = 'file'
@@ -77,7 +94,7 @@ export default class App extends Vue {
     }
   }
   private addImageFile(file: File) {
-    console.log(file)
+    this.images.push(new Image(file))
   }
 }
 </script>
