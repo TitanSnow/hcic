@@ -4,11 +4,17 @@
       <img :src="(compressed || origin).src" :alt="title" class="hola-image">
       <div class="image-headline">
         <span class="image-title" contenteditable="true" spellcheck="false" ref="title">{{ title }}</span>
-        <button
-          class="hola-button hola-button-primary material-icons image-download-button"
-          type="button"
-          v-if="compressed"
-          @click="download">save_alt</button>
+        <span>
+          <button
+            class="hola-button hola-button-primary material-icons image-action-button"
+            type="button"
+            v-if="compressed"
+            @click="download">save_alt</button>
+          <button
+            class="hola-button material-icons image-action-button"
+            type="button"
+            @click="close">close</button>
+        </span>
       </div>
       <div class="image-info">
         <div :class="{
@@ -167,6 +173,9 @@ export default class ImgView extends Vue {
     }
     aElem.click()
   }
+  private close() {
+    this.$emit('close')
+  }
 }
 </script>
 
@@ -178,7 +187,7 @@ export default class ImgView extends Vue {
     justify-content space-between
     align-items center
     margin-bottom .5em
-  .image-download-button
+  .image-action-button
     padding 5px 10px
   .image-title
     font-weight 500

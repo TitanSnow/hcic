@@ -48,7 +48,8 @@
         :config="config"
         :file="img.file"
         :key="img.key"
-        v-for="img in images"/>
+        v-for="img in images"
+        @close="removeImage(img)"/>
     </div>
   </div>
 </template>
@@ -101,6 +102,9 @@ export default class App extends Vue {
   }
   private addImageFile(file: File) {
     this.images.push(new Image(file))
+  }
+  private removeImage(img: Image) {
+    this.images.splice(this.images.indexOf(img), 1)
   }
 }
 </script>
