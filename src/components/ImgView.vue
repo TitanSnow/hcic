@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import _ from 'lodash'
+import debounce from 'lodash/debounce'
 import { Config } from '@/App.vue'
 
 interface ImgWH {
@@ -147,7 +147,7 @@ export default class ImgView extends Vue {
     }
   }
   private created() {
-    const debouncedUpdateSession = _.debounce(this.updateSession.bind(this), 50)
+    const debouncedUpdateSession = debounce(this.updateSession.bind(this), 50)
     this.$watch('origin', debouncedUpdateSession, { immediate: true })
     this.$watch('config', debouncedUpdateSession, { deep: true })
   }
