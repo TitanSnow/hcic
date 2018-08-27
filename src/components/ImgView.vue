@@ -4,13 +4,19 @@
       <img :src="(compressed || origin).src" :alt="title" class="hola-image">
       <p class="image-title">{{ title }}</p>
       <div class="image-info">
-        <div class="before">
+        <div :class="{
+          'before': true,
+          'no-diff': !compressed
+        }">
           <span class="size">{{ toKB(origin.size) }}KB</span>
-          <span class="wh" v-if="originWH">{{ originWH.width }}x{{ originWH.height }}</span>
+          <span :class="{
+            'wh': true,
+            'no-diff': whNoChange,
+          }" v-if="originWH">{{ originWH.width }}x{{ originWH.height }}</span>
         </div>
         <div class="after" v-if="compressed">
           <span class="size">{{ toKB(compressed.size) }}KB</span>
-          <span class="wh" v-if="compressedWH">{{ compressedWH.width }}x{{ compressedWH.height }}</span>
+          <span class="wh" v-if="compressedWH" v-show="!whNoChange">{{ compressedWH.width }}x{{ compressedWH.height }}</span>
         </div>
       </div>
     </div>
@@ -129,6 +135,14 @@ export default class ImgView extends Vue {
   private toKB(size: number) {
     return Math.round(size / 10.24) / 100
   }
+  private get whNoChange() {
+    return (
+      this.originWH &&
+      this.compressedWH &&
+      (this.originWH.width === this.compressedWH.width &&
+        this.originWH.height === this.compressedWH.height)
+    )
+  }
 }
 </script>
 
@@ -147,9 +161,19 @@ export default class ImgView extends Vue {
       > span:last-child
         text-align right
     > div.before
-      color red
       > span
         text-decoration line-through
+        color #EF5350
     > div.after
-      color green
+      > span
+        color #66BB6A
+    no-diff()
+      text-decoration inherit
+      color inherit
+    > div.before, > div.after
+      > span.no-diff
+        no-diff()
+    > div.before.no-diff, > div.after.no-diff
+      > span
+        no-diff()
 </style>
