@@ -2,7 +2,14 @@
   <div class="hola-columns-item">
     <div class="hola-card hola-card-with-image image-card">
       <img :src="(compressed || origin).src" :alt="title" class="hola-image">
-      <p class="image-title">{{ title }}</p>
+      <div class="image-headline">
+        <span class="image-title" contenteditable="true" spellcheck="false" ref="title">{{ title }}</span>
+        <button
+          class="hola-button hola-button-primary material-icons image-download-button"
+          type="button"
+          v-if="compressed"
+          @click="download">save_alt</button>
+      </div>
       <div class="image-info">
         <div :class="{
           'before': true,
@@ -51,6 +58,16 @@ class ImgState {
   public readonly whPromise: Promise<ImgWH>
   public get size() {
     return this.blob.size
+  }
+  public get extname() {
+    switch (this.blob.type) {
+      case 'image/webp':
+        return 'webp'
+      case 'image/jpeg':
+        return 'jpg'
+      default:
+        return null
+    }
   }
   constructor(blob: Blob) {
     this.blob = blob
@@ -143,14 +160,32 @@ export default class ImgView extends Vue {
         this.originWH.height === this.compressedWH.height)
     )
   }
+  private download() {
+    const aElem = document.createElement('a')
+    aElem.href = this.compressed!.src
+    const title = (this.$refs.title as Element).textContent
+    if (title) {
+      aElem.download = title + '.' + this.compressed!.extname!
+    } else {
+      aElem.download = ''
+    }
+    aElem.click()
+  }
 }
 </script>
 
 <style lang="stylus">
 .image-card
+  .image-headline
+    width 100%
+    display flex
+    justify-content space-between
+    align-items center
+    margin-bottom .5em
+  .image-download-button
+    padding 5px 10px
   .image-title
     font-weight 500
-    margin-bottom .5em
   .image-info
     display table
     width 100%
