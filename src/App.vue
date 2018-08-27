@@ -56,10 +56,7 @@ import uuid4 from 'uuid/v4'
 import ImgView from '@/components/ImgView.vue'
 
 class Image {
-  constructor(
-    public file: File,
-    public key = uuid4()
-  ) {}
+  constructor(public file: File, public key = uuid4()) {}
 }
 
 export interface Config {
@@ -68,7 +65,7 @@ export interface Config {
   type: string
 }
 
-@Component({components: {ImgView}})
+@Component({ components: { ImgView } })
 export default class App extends Vue {
   private config: Config = {
     level: 0.92,
