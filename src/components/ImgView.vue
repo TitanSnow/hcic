@@ -82,8 +82,8 @@ class Session {
       this.origin.bitmapPromise.then(bitmap => {
         const canvas = document.createElement('canvas')
         const config = this.config
-        const w = (canvas.width = Math.round(bitmap.width * config.scale))
-        const h = (canvas.height = Math.round(bitmap.height * config.scale))
+        const w = (canvas.width = Math.max(1, Math.round(bitmap.width * config.scale)))
+        const h = (canvas.height = Math.max(1, Math.round(bitmap.height * config.scale)))
         const context = canvas.getContext('2d')!
         context.drawImage(bitmap, 0, 0, w, h)
         canvas.toBlob(
