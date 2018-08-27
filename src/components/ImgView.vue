@@ -13,8 +13,8 @@ import _ from 'lodash'
 import { Config } from '@/App.vue'
 
 interface ImgWH {
-  readonly width: number,
-  readonly height: number,
+  readonly width: number
+  readonly height: number
 }
 function calcImgWH(src: string): Promise<ImgWH> {
   return new Promise(resolve => {
@@ -50,17 +50,22 @@ class Session {
   ) {}
   public compress(): Promise<ImgState> {
     return new Promise(resolve => {
-      const imgElem = new Image
+      const imgElem = new Image()
       imgElem.src = this.origin.src
       imgElem.onload = () => {
         const canvas = document.createElement('canvas')
-        const w = canvas.width = Math.round(imgElem.width * this.config.scale)
-        const h = canvas.height = Math.round(imgElem.height * this.config.scale)
+        const config = this.config
+        const w = (canvas.width = Math.round(imgElem.width * config.scale))
+        const h = (canvas.height = Math.round(imgElem.height * config.scale))
         const context = canvas.getContext('2d')!
         context.drawImage(imgElem, 0, 0, w, h)
-        canvas.toBlob(blob => {
-          resolve(new ImgState(blob!))
-        }, this.config.type, this.config.level)
+        canvas.toBlob(
+          blob => {
+            resolve(new ImgState(blob!))
+          },
+          this.config.type,
+          this.config.level
+        )
       }
     })
   }
@@ -68,8 +73,10 @@ class Session {
 
 @Component
 export default class ImgView extends Vue {
-  @Prop() private file!: File
-  @Prop() private config!: Config
+  @Prop()
+  private file!: File
+  @Prop()
+  private config!: Config
   private compressed: ImgState | null = null
   private session: Session | null = null
   private get origin() {
@@ -79,9 +86,12 @@ export default class ImgView extends Vue {
     this.session = new Session(this.origin, this.config)
   }
   private get title() {
-    return this.file.name.split('.').slice(0, -1).join('.')
+    return this.file.name
+      .split('.')
+      .slice(0, -1)
+      .join('.')
   }
-  @Watch('session', {immediate: true})
+  @Watch('session', { immediate: true })
   private async compress() {
     if (this.session) {
       const session = this.session
@@ -93,8 +103,8 @@ export default class ImgView extends Vue {
   }
   private created() {
     const debouncedUpdateSession = _.debounce(this.updateSession.bind(this), 50)
-    this.$watch('origin', debouncedUpdateSession, {immediate: true})
-    this.$watch('config', debouncedUpdateSession, {deep: true})
+    this.$watch('origin', debouncedUpdateSession, { immediate: true })
+    this.$watch('config', debouncedUpdateSession, { deep: true })
   }
 }
 </script>
