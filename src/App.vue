@@ -32,7 +32,10 @@
       </div>
       <div class="hola-columns-item">
         <div class="hola-card select-card">
-          <div title="Drop images here" @dblclick="addImageByDialog">
+          <div title="Drop images here"
+            @dblclick="addImageByDialog"
+            @dragover.prevent="void 0"
+            @drop.prevent="addImageFiles($event.dataTransfer.files)">
             <button class="hola-button hola-button-primary material-icons"
               type="button"
               @click="addImageByDialog">
