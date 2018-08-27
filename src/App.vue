@@ -7,21 +7,21 @@
             <p>
               <label>
                 <span>Quality:</span>
-                <input type="range" min="0" max="1" step="0.01" v-model.number="level" class="hola-form-ctrl">
-                <input type="number" min="0" max="1" step="0.01" v-model.number="level" class="hola-form-ctrl">
+                <input type="range" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl">
+                <input type="number" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl">
               </label>
             </p>
             <p>
               <label>
                 <span>Scale:</span>
-                <input type="range" min="0" max="2" step="0.01" v-model.number="scale" class="hola-form-ctrl">
-                <input type="number" min="0" max="2" step="0.01" v-model.number="scale" class="hola-form-ctrl">
+                <input type="range" min="0" max="2" step="0.01" v-model.number="config.scale" class="hola-form-ctrl">
+                <input type="number" min="0" max="2" step="0.01" v-model.number="config.scale" class="hola-form-ctrl">
               </label>
             </p>
             <p>
               <label>
                 <span>Type:</span>
-                <select v-model="type" class="hola-form-ctrl">
+                <select v-model="config.type" class="hola-form-ctrl">
                   <option value="image/webp">WebP</option>
                   <option value="image/jpeg">JPEG</option>
                 </select>
@@ -42,9 +42,7 @@
         </div>
       </div>
       <img-view
-        :level="level"
-        :scale="scale"
-        :type="type"
+        :config="config"
         :file="img.file"
         :key="img.key"
         v-for="img in images"/>
@@ -64,11 +62,19 @@ class Image {
   ) {}
 }
 
+export interface Config {
+  level: number
+  scale: number
+  type: string
+}
+
 @Component({components: {ImgView}})
 export default class App extends Vue {
-  private level = 0.92
-  private scale = 1
-  private type = 'image/webp'
+  private config: Config = {
+    level: 0.92,
+    scale: 1,
+    type: 'image/webp',
+  }
 
   private images: Image[] = []
 

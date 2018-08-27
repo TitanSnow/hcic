@@ -1,54 +1,100 @@
 <template>
   <div class="hola-columns-item">
     <div class="hola-card hola-card-with-image image-card">
-      <img :src="beforeUrl" :alt="beforeName" class="hola-image">
-      <p class="image-title">{{ beforeName }}</p>
-      <p class="image-info">
-        <span class="image-size">{{ beforeSizeInKB }}KB</span>
-        <span class="image-wh" v-if="beforeWidth != null && beforeHeight != null">{{ beforeWidth }}x{{ beforeHeight }}</span>
-      </p>
+      <img :src="(compressed || origin).src" :alt="title" class="hola-image">
+      <p class="image-title">{{ title }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import _ from 'lodash'
+import { Config } from '@/App.vue'
+
+interface ImgWH {
+  readonly width: number,
+  readonly height: number,
+}
+function calcImgWH(src: string): Promise<ImgWH> {
+  return new Promise(resolve => {
+    const imgElem = new Image()
+    imgElem.src = src
+    imgElem.onload = () => {
+      resolve({
+        width: imgElem.width,
+        height: imgElem.height,
+      })
+    }
+  })
+}
+class ImgState {
+  public readonly blob: Blob
+  public readonly src: string
+  public wh?: ImgWH = void 0
+  public get size() {
+    return this.blob.size
+  }
+  constructor(blob: Blob) {
+    this.blob = blob
+    this.src = URL.createObjectURL(blob)
+    calcImgWH(this.src).then(wh => {
+      this.wh = wh
+    })
+  }
+}
+class Session {
+  constructor(
+    public readonly origin: ImgState,
+    public readonly config: Config
+  ) {}
+  public compress(): Promise<ImgState> {
+    return new Promise(resolve => {
+      const imgElem = new Image
+      imgElem.src = this.origin.src
+      imgElem.onload = () => {
+        const canvas = document.createElement('canvas')
+        const w = canvas.width = Math.round(imgElem.width * this.config.scale)
+        const h = canvas.height = Math.round(imgElem.height * this.config.scale)
+        const context = canvas.getContext('2d')!
+        context.drawImage(imgElem, 0, 0, w, h)
+        canvas.toBlob(blob => {
+          resolve(new ImgState(blob!))
+        }, this.config.type, this.config.level)
+      }
+    })
+  }
+}
 
 @Component
 export default class ImgView extends Vue {
-  @Prop()
-  private level!: number
-  @Prop()
-  private scale!: number
-  @Prop()
-  private type!: string
-  @Prop()
-  private file!: File
-  private beforeWidth: number | null = null
-  private beforeHeight: number | null = null
-  private get beforeSize() {
-    return this.file.size
+  @Prop() private file!: File
+  @Prop() private config!: Config
+  private compressed: ImgState | null = null
+  private session: Session | null = null
+  private get origin() {
+    return new ImgState(this.file)
   }
-  private get beforeUrl() {
-    return URL.createObjectURL(this.file)
+  private updateSession() {
+    this.session = new Session(this.origin, this.config)
   }
-  private get beforeName() {
-    return this.file.name
+  private get title() {
+    return this.file.name.split('.').slice(0, -1).join('.')
   }
-  private toKB(size: number) {
-    return Math.round(size / 10.24) / 100
-  }
-  private get beforeSizeInKB() {
-    return this.toKB(this.beforeSize)
-  }
-  @Watch('beforeUrl', { immediate: true })
-  private onBeforeUrlChange(url: string) {
-    const imgElem = new Image()
-    imgElem.src = url
-    imgElem.onload = () => {
-      this.beforeWidth = imgElem.width
-      this.beforeHeight = imgElem.height
+  @Watch('session', {immediate: true})
+  private async compress() {
+    if (this.session) {
+      const session = this.session
+      const compressed = await session.compress()
+      if (session === this.session) {
+        this.compressed = compressed
+      }
     }
+  }
+  private created() {
+    const debouncedUpdateSession = _.debounce(this.updateSession.bind(this), 50)
+    this.$watch('origin', debouncedUpdateSession, {immediate: true})
+    this.$watch('config', debouncedUpdateSession, {deep: true})
   }
 }
 </script>
@@ -59,7 +105,4 @@ export default class ImgView extends Vue {
     margin-bottom .5em
   .image-title
     font-weight 500
-  .image-info
-    display flex
-    justify-content space-between
 </style>
