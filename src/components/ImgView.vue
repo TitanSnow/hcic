@@ -39,23 +39,11 @@ interface ImgWH {
   readonly width: number
   readonly height: number
 }
-function calcImgWH(src: string): Promise<ImgWH> {
-  return new Promise(resolve => {
-    const imgElem = new Image()
-    imgElem.src = src
-    imgElem.onload = () => {
-      resolve({
-        width: imgElem.width,
-        height: imgElem.height,
-      })
-    }
-  })
-}
 class ImgState {
   public readonly blob: Blob
   public readonly src: string
-  public wh?: ImgWH = void 0
   public readonly whPromise: Promise<ImgWH>
+  public readonly bitmapPromise: Promise<ImageBitmap>
   public get size() {
     return this.blob.size
   }
@@ -72,8 +60,15 @@ class ImgState {
   constructor(blob: Blob) {
     this.blob = blob
     this.src = URL.createObjectURL(blob)
-    this.whPromise = calcImgWH(this.src).then(wh => {
-      return (this.wh = wh)
+    this.bitmapPromise = createImageBitmap(blob)
+    this.whPromise = new Promise(resolve => {
+      this.bitmapPromise.then(bitmap => {
+        resolve({
+          width: bitmap.width,
+          height: bitmap.height
+        })
+        return bitmap
+      })
     })
   }
 }
@@ -84,15 +79,13 @@ class Session {
   ) {}
   public compress(): Promise<ImgState> {
     return new Promise(resolve => {
-      const imgElem = new Image()
-      imgElem.src = this.origin.src
-      imgElem.onload = () => {
+      this.origin.bitmapPromise.then(bitmap => {
         const canvas = document.createElement('canvas')
         const config = this.config
-        const w = (canvas.width = Math.round(imgElem.width * config.scale))
-        const h = (canvas.height = Math.round(imgElem.height * config.scale))
+        const w = (canvas.width = Math.round(bitmap.width * config.scale))
+        const h = (canvas.height = Math.round(bitmap.height * config.scale))
         const context = canvas.getContext('2d')!
-        context.drawImage(imgElem, 0, 0, w, h)
+        context.drawImage(bitmap, 0, 0, w, h)
         canvas.toBlob(
           blob => {
             resolve(new ImgState(blob!))
@@ -100,7 +93,8 @@ class Session {
           this.config.type,
           this.config.level
         )
-      }
+        return bitmap
+      })
     })
   }
 }
@@ -135,6 +129,8 @@ export default class ImgView extends Vue {
       const originWH = await session.origin.whPromise
       if (session === this.session) {
         this.originWH = originWH
+      } else {
+        return
       }
       const compressed = await compress
       const compressedWH = await compressed.whPromise
