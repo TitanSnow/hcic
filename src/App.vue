@@ -162,13 +162,14 @@ export default class App extends Vue {
         width 7ch
         font-weight bold
       > :last-child
-        width 5.5ch
+        width 5ch
       > :nth-child(2)
         flex-grow 99
         flex-shrink 99
         width 0
       > .hola-form-ctrl
         height auto
+        font-family inherit
   > .global-actions
     display flex
     width 100%
