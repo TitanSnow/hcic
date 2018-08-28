@@ -49,7 +49,7 @@
     </div>
     <div class="hola-layout-sidebar hola-card-stack">
       <div class="hola-card">
-        Hello World
+        <config-form :config="config"/>
       </div>
     </div>
   </div>
@@ -61,7 +61,7 @@ import debounce from 'lodash/debounce'
 import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
 import VProgressCircular from 'vuetify/src/components/VProgressCircular/VProgressCircular'
-import { Config } from '@/App.vue'
+import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
 
 interface ImgWH {
   readonly width: number
@@ -109,7 +109,7 @@ class Session {
             resolve(new ImgState(blob!))
           },
           this.config.type,
-          this.config.level
+          this.config.compress ? this.config.level : void 0
         )
         return bitmap
       })
@@ -117,7 +117,7 @@ class Session {
   }
 }
 
-@Component({components: {'progress-circular': VProgressCircular}})
+@Component({components: {'progress-circular': VProgressCircular, ConfigForm}})
 export default class ImgView extends Vue {
   @Prop()
   private file!: File

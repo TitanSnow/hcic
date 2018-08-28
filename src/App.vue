@@ -3,32 +3,7 @@
     <div class="hola-columns hola-card-stack">
       <div class="hola-columns-item">
         <div class="hola-card ctrl-card">
-          <form>
-            <p>
-              <label>
-                <span>Quality:</span>
-                <input type="range" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl" :disabled="!compressableMime.includes(config.type)">
-                <input type="number" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl" :disabled="!compressableMime.includes(config.type)">
-              </label>
-            </p>
-            <p>
-              <label>
-                <span>Scale:</span>
-                <input type="range" min="0" max="2" step="0.01" v-model.number="config.scale" class="hola-form-ctrl">
-                <input type="number" min="0" max="2" step="0.01" v-model.number="config.scale" class="hola-form-ctrl">
-              </label>
-            </p>
-            <p>
-              <label>
-                <span>Type:</span>
-                <select v-model="config.type" class="hola-form-ctrl">
-                  <option value="image/webp">WebP</option>
-                  <option value="image/jpeg">JPEG</option>
-                  <option value="image/png">PNG</option>
-                </select>
-              </label>
-            </p>
-          </form>
+          <config-form :config="config"/>
           <div class="global-actions">
             <button
               class="hola-button hola-button-primary"
@@ -74,12 +49,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import clone from 'lodash/clone'
 import nanoid from 'nanoid'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import ImgView from '@/components/ImgView.vue'
+import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
 
 function isSupportWebP() {
   const canvas = document.createElement('canvas')
@@ -91,22 +67,18 @@ class Image {
   constructor(public readonly file: File, public readonly key = nanoid()) {}
 }
 
-export interface Config {
-  level: number
-  scale: number
-  type: string
-}
-
 const defaultConfig: Config = {
   level: 0.92,
   scale: 1,
   type: isSupportWebP() ? 'image/webp' : 'image/jpeg',
+  compress: true
 }
 
-@Component({ components: { ImgView } })
+const compressableMime = ['image/webp', 'image/jpeg']
+
+@Component({ components: { ImgView, ConfigForm } })
 export default class App extends Vue {
   private config: Config = clone(defaultConfig)
-  private readonly compressableMime = ['image/webp', 'image/jpeg']
   private readonly images: Image[] = []
   private editingImage: Image | null = null
 
@@ -155,6 +127,10 @@ export default class App extends Vue {
     }
     saveAs(await zip.generateAsync({ type: 'blob' }))
   }
+  @Watch('config.type')
+  private onTypeChange(type: string) {
+    this.config.compress = compressableMime.includes(type)
+  }
 }
 </script>
 
@@ -162,22 +138,6 @@ export default class App extends Vue {
 .ctrl-card
   > form
     margin-bottom 1.3em
-    > p > label
-      display flex
-      > :first-child
-        display flex
-        align-items center
-        width 7ch
-        font-weight bold
-      > :last-child
-        width 5ch
-      > :nth-child(2)
-        flex-grow 99
-        flex-shrink 99
-        width 0
-      > .hola-form-ctrl
-        height auto
-        font-family inherit
   > .global-actions
     display flex
     width 100%
