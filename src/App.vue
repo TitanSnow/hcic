@@ -161,6 +161,8 @@ export default class App extends Vue {
         flex-grow 99
         flex-shrink 99
         width 0
+      > .hola-form-ctrl
+        height auto
   > .global-actions
     display flex
     width 100%
