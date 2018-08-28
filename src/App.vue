@@ -67,6 +67,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import clone from 'lodash/clone'
 import uuid4 from 'uuid/v4'
 import ImgView from '@/components/ImgView.vue'
 
@@ -80,13 +81,15 @@ export interface Config {
   type: string
 }
 
+const defaultConfig: Config = {
+  level: 0.92,
+  scale: 1,
+  type: 'image/webp',
+}
+
 @Component({ components: { ImgView } })
 export default class App extends Vue {
-  private config: Config = {
-    level: 0.92,
-    scale: 1,
-    type: 'image/webp',
-  }
+  private config: Config = clone(defaultConfig)
 
   private images: Image[] = []
 
@@ -117,8 +120,12 @@ export default class App extends Vue {
   private removeImage(img: Image) {
     this.images.splice(this.images.indexOf(img), 1)
   }
+  private resetConfig() {
+    this.config = clone(defaultConfig)
+  }
   private clearAll() {
     this.images.splice(0)
+    this.resetConfig()
   }
   private downloadAll() {
     for (const imgView of this.$refs['img-views']) {
@@ -150,6 +157,7 @@ export default class App extends Vue {
     width 100%
     > button
       width 50%
+      font-family inherit
 
 .select-card > div
   border var(--hola-primary-color) 7px dashed
