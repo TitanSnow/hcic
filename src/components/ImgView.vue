@@ -46,7 +46,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import debounce from 'lodash/debounce'
 import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
-import { default as VProgressCircular } from 'vuetify/src/components/VProgressCircular/VProgressCircular'
+import VProgressCircular from 'vuetify/src/components/VProgressCircular/VProgressCircular'
 import { Config } from '@/App.vue'
 
 interface ImgWH {
