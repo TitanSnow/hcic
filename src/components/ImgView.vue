@@ -6,9 +6,13 @@
         <span class="image-title" contenteditable="true" spellcheck="false" ref="title">{{ title }}</span>
         <span class="image-actions">
           <button
+            class="hola-button hola-button-primary"
+            type="button"
+            v-if="compressing"><progress-circular indeterminate color="white" :size="18" :width="2"/></button>
+          <button
             class="hola-button hola-button-primary material-icons"
             type="button"
-            v-if="compressed"
+            v-else
             @click="download">save_alt</button>
           <button
             class="hola-button material-icons"
@@ -41,6 +45,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import debounce from 'lodash/debounce'
 import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
+import { default as VProgressCircular } from 'vuetify/src/components/VProgressCircular'
 import { Config } from '@/App.vue'
 
 interface ImgWH {
@@ -97,7 +102,7 @@ class Session {
   }
 }
 
-@Component
+@Component({components: {'progress-circular': VProgressCircular}})
 export default class ImgView extends Vue {
   @Prop()
   private file!: File
@@ -107,6 +112,7 @@ export default class ImgView extends Vue {
   private session: Session | null = null
   private compressedWH: ImgWH | null = null
   private originWH: ImgWH | null = null
+  private compressing: boolean = true
   private get origin() {
     return new ImgState(this.file)
   }
@@ -122,6 +128,7 @@ export default class ImgView extends Vue {
   @Watch('session', { immediate: true })
   private async compress() {
     if (this.session) {
+      this.compressing = true
       const session = this.session
       const compress = session.compress()
       const originWH = await session.origin.whPromise
@@ -135,6 +142,7 @@ export default class ImgView extends Vue {
       if (session === this.session) {
         this.compressed = compressed
         this.compressedWH = compressedWH
+        this.compressing = false
       }
     }
   }
@@ -155,8 +163,8 @@ export default class ImgView extends Vue {
     )
   }
   public getDownloadBlob() {
-    if (this.compressed) {
-      return this.compressed.blob
+    if (!this.compressing) {
+      return this.compressed!.blob
     }
   }
   public generateFilename() {
@@ -193,8 +201,14 @@ export default class ImgView extends Vue {
     > .image-actions
       flex-shrink 0
       margin-left 1ch
+      display flex
       > button
         padding 5px 10px
+        margin 0
+        width 44px
+        display flex
+        justify-content space-around
+        align-items center
   .image-info
     display table
     width 100%
