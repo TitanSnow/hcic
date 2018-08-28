@@ -68,11 +68,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import clone from 'lodash/clone'
-import uuid4 from 'uuid/v4'
+import nanoid from 'nanoid'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 import ImgView from '@/components/ImgView.vue'
 
 class Image {
-  constructor(public file: File, public key = uuid4()) {}
+  constructor(public file: File, public key = nanoid()) {}
 }
 
 export interface Config {
@@ -127,10 +129,16 @@ export default class App extends Vue {
     this.images.splice(0)
     this.resetConfig()
   }
-  private downloadAll() {
-    for (const imgView of this.$refs['img-views']) {
-      (imgView as ImgView).download()
+  private async downloadAll() {
+    const zip = new JSZip()
+    for (const imgView of this.$refs['img-views'] as ImgView[]) {
+      const blob = imgView.getDownloadBlob()
+      if (blob) {
+        const filename = imgView.generateFilename()
+        zip.file(filename, blob)
+      }
     }
+    saveAs(await zip.generateAsync({ type: 'blob' }))
   }
 }
 </script>

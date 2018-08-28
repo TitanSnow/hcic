@@ -39,6 +39,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import debounce from 'lodash/debounce'
+import { extension as getExtnameByMime } from 'mime-types'
+import { saveAs } from 'file-saver'
 import { Config } from '@/App.vue'
 
 interface ImgWH {
@@ -52,16 +54,6 @@ class ImgState {
   public readonly bitmapPromise: Promise<ImageBitmap>
   public get size() {
     return this.blob.size
-  }
-  public get extname() {
-    switch (this.blob.type) {
-      case 'image/webp':
-        return 'webp'
-      case 'image/jpeg':
-        return 'jpg'
-      default:
-        return null
-    }
   }
   constructor(blob: Blob) {
     this.blob = blob
@@ -162,16 +154,22 @@ export default class ImgView extends Vue {
         this.originWH.height === this.compressedWH.height)
     )
   }
-  public download() {
-    const aElem = document.createElement('a')
-    aElem.href = this.compressed!.src
-    const title = (this.$refs.title as Element).textContent
-    if (title) {
-      aElem.download = title + '.' + this.compressed!.extname!
-    } else {
-      aElem.download = ''
+  public getDownloadBlob() {
+    if (this.compressed) {
+      return this.compressed.blob
     }
-    aElem.click()
+  }
+  public generateFilename() {
+    const title = (this.$refs.title as Element).textContent
+    const shuffix = '.' + getExtnameByMime(this.compressed!.blob.type)
+    if (title) {
+      return title + shuffix
+    } else {
+      return this.$vnode.key + shuffix
+    }
+  }
+  private download() {
+    saveAs(this.getDownloadBlob()!, this.generateFilename())
   }
   private close() {
     this.$emit('close')
