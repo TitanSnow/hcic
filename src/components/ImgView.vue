@@ -45,7 +45,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import debounce from 'lodash/debounce'
 import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
-import { default as VProgressCircular } from 'vuetify/src/components/VProgressCircular'
+import { default as VProgressCircular } from 'vuetify/src/components/VProgressCircular/VProgressCircular'
 import { Config } from '@/App.vue'
 
 interface ImgWH {
@@ -202,6 +202,7 @@ export default class ImgView extends Vue {
       flex-shrink 0
       margin-left 1ch
       display flex
+      -webkit-transform translateZ(0)
       > button
         padding 5px 10px
         margin 0
