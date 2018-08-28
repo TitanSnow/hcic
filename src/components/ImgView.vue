@@ -1,7 +1,8 @@
 <template>
-  <div class="hola-columns-item">
+  <div class="hola-columns-item" v-if="!editmode">
     <div class="hola-card hola-card-with-image image-card">
-      <img :src="(compressed || origin).src" :alt="title" class="hola-image">
+      <img :src="(compressed || origin).src" :alt="title" class="hola-image"
+        style="cursor: pointer" @click="enterEditor">
       <div class="image-headline">
         <span class="image-title" contenteditable="true" spellcheck="false" ref="title">{{ title }}</span>
         <span class="image-actions">
@@ -36,6 +37,19 @@
           <span class="size">{{ toKB(compressed.size) }}KB</span>
           <span class="wh" v-if="compressedWH" v-show="!whNoChange">{{ compressedWH.width }}x{{ compressedWH.height }}</span>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="hola-container hola-layout-container hola-layout-container-sidebar-right" v-else>
+    <div class="hola-layout-main">
+      <div class="hola-card hola-card-full-image">
+        <img :src="(compressed || origin).src" :alt="title" class="hola-image"
+          :style="compressing ? {} : {cursor: 'zoom-in'}" @click="compressing ? void 0 : showBig()">
+      </div>
+    </div>
+    <div class="hola-layout-sidebar hola-card-stack">
+      <div class="hola-card">
+        Hello World
       </div>
     </div>
   </div>
@@ -109,6 +123,8 @@ export default class ImgView extends Vue {
   private file!: File
   @Prop()
   private config!: Config
+  @Prop({ default: false })
+  private editmode!: boolean
   private compressed: ImgState | null = null
   private session: Session | null = null
   private compressedWH: ImgWH | null = null
@@ -182,6 +198,12 @@ export default class ImgView extends Vue {
   }
   private close() {
     this.$emit('close')
+  }
+  private enterEditor() {
+    this.$emit('request-editmode')
+  }
+  private showBig() {
+    window.open(this.compressed!.src, '_blank')
   }
 }
 </script>

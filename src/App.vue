@@ -1,5 +1,5 @@
 <template>
-  <div class="hola-container">
+  <div class="hola-container" v-if="editingImage === null">
     <div class="hola-columns hola-card-stack">
       <div class="hola-columns-item">
         <div class="hola-card ctrl-card">
@@ -61,9 +61,16 @@
         :key="img.key"
         v-for="img in images"
         @close="removeImage(img)"
+        @request-editmode="editingImage = img"
         :ref="`img-views`"/>
     </div>
   </div>
+  <img-view
+    :config="config"
+    :file="editingImage.file"
+    :key="editingImage.key"
+    :editmode="true"
+    v-else/>
 </template>
 
 <script lang="ts">
@@ -101,6 +108,7 @@ export default class App extends Vue {
   private config: Config = clone(defaultConfig)
   private readonly compressableMime = ['image/webp', 'image/jpeg']
   private readonly images: Image[] = []
+  private editingImage: Image | null = null
 
   private createFileInputElement() {
     const elem = document.createElement('input')
