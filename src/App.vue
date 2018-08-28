@@ -74,6 +74,12 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import ImgView from '@/components/ImgView.vue'
 
+function isSupportWebP() {
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 1
+  return canvas.toDataURL('image/webp').startsWith('data:image/webp;')
+}
+
 class Image {
   constructor(public readonly file: File, public readonly key = nanoid()) {}
 }
@@ -87,7 +93,7 @@ export interface Config {
 const defaultConfig: Config = {
   level: 0.92,
   scale: 1,
-  type: 'image/webp',
+  type: isSupportWebP() ? 'image/webp' : 'image/jpeg',
 }
 
 @Component({ components: { ImgView } })
