@@ -8,6 +8,7 @@
           <button
             class="hola-button hola-button-primary"
             type="button"
+            disabled
             v-if="compressing"><progress-circular indeterminate color="white" :size="18" :width="2"/></button>
           <button
             class="hola-button hola-button-primary material-icons"
@@ -235,4 +236,6 @@ export default class ImgView extends Vue {
     > div.before.no-diff, > div.after.no-diff
       > span
         no-diff()
+  .hola-button[disabled]
+    box-shadow none
 </style>
