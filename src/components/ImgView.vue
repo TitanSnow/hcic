@@ -130,6 +130,20 @@ export default class ImgView extends Vue {
   private compressedWH: ImgWH | null = null
   private originWH: ImgWH | null = null
   private compressing: boolean = true
+  public getDownloadBlob() {
+    if (!this.compressing) {
+      return this.compressed!.blob
+    }
+  }
+  public generateFilename() {
+    const title = (this.$refs.title as Element).textContent
+    const shuffix = '.' + getExtnameByMime(this.compressed!.blob.type)
+    if (title) {
+      return title + shuffix
+    } else {
+      return this.$vnode.key + shuffix
+    }
+  }
   private get origin() {
     return new ImgState(this.file)
   }
@@ -178,20 +192,6 @@ export default class ImgView extends Vue {
       (this.originWH.width === this.compressedWH.width &&
         this.originWH.height === this.compressedWH.height)
     )
-  }
-  public getDownloadBlob() {
-    if (!this.compressing) {
-      return this.compressed!.blob
-    }
-  }
-  public generateFilename() {
-    const title = (this.$refs.title as Element).textContent
-    const shuffix = '.' + getExtnameByMime(this.compressed!.blob.type)
-    if (title) {
-      return title + shuffix
-    } else {
-      return this.$vnode.key + shuffix
-    }
   }
   private download() {
     saveAs(this.getDownloadBlob()!, this.generateFilename())
