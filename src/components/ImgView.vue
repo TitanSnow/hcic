@@ -4,14 +4,14 @@
       <img :src="(compressed || origin).src" :alt="title" class="hola-image">
       <div class="image-headline">
         <span class="image-title" contenteditable="true" spellcheck="false" ref="title">{{ title }}</span>
-        <span>
+        <span class="image-actions">
           <button
-            class="hola-button hola-button-primary material-icons image-action-button"
+            class="hola-button hola-button-primary material-icons"
             type="button"
             v-if="compressed"
             @click="download">save_alt</button>
           <button
-            class="hola-button material-icons image-action-button"
+            class="hola-button material-icons"
             type="button"
             @click="close">close</button>
         </span>
@@ -187,10 +187,16 @@ export default class ImgView extends Vue {
     justify-content space-between
     align-items center
     margin-bottom .5em
-  .image-action-button
-    padding 5px 10px
-  .image-title
-    font-weight 500
+    > .image-title
+      font-weight 500
+      white-space nowrap
+      overflow hidden
+      flex-shrink 1
+    > .image-actions
+      flex-shrink 0
+      margin-left 1ch
+      > button
+        padding 5px 10px
   .image-info
     display table
     width 100%
