@@ -7,8 +7,8 @@
             <p>
               <label>
                 <span>Quality:</span>
-                <input type="range" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl">
-                <input type="number" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl">
+                <input type="range" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl" :disabled="!compressableMime.includes(config.type)">
+                <input type="number" min="0" max="1" step="0.01" v-model.number="config.level" class="hola-form-ctrl" :disabled="!compressableMime.includes(config.type)">
               </label>
             </p>
             <p>
@@ -24,6 +24,7 @@
                 <select v-model="config.type" class="hola-form-ctrl">
                   <option value="image/webp">WebP</option>
                   <option value="image/jpeg">JPEG</option>
+                  <option value="image/png">PNG</option>
                 </select>
               </label>
             </p>
@@ -74,7 +75,7 @@ import { saveAs } from 'file-saver'
 import ImgView from '@/components/ImgView.vue'
 
 class Image {
-  constructor(public file: File, public key = nanoid()) {}
+  constructor(public readonly file: File, public readonly key = nanoid()) {}
 }
 
 export interface Config {
@@ -92,8 +93,8 @@ const defaultConfig: Config = {
 @Component({ components: { ImgView } })
 export default class App extends Vue {
   private config: Config = clone(defaultConfig)
-
-  private images: Image[] = []
+  private readonly compressableMime = ['image/webp', 'image/jpeg']
+  private readonly images: Image[] = []
 
   private createFileInputElement() {
     const elem = document.createElement('input')
