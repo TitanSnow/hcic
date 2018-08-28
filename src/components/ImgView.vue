@@ -162,7 +162,7 @@ export default class ImgView extends Vue {
         this.originWH.height === this.compressedWH.height)
     )
   }
-  private download() {
+  public download() {
     const aElem = document.createElement('a')
     aElem.href = this.compressed!.src
     const title = (this.$refs.title as Element).textContent

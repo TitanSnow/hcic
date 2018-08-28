@@ -28,6 +28,16 @@
               </label>
             </p>
           </form>
+          <div class="global-actions">
+            <button
+              class="hola-button hola-button-primary"
+              type="button"
+              @click="downloadAll">Download All</button>
+            <button
+              class="hola-button"
+              type="button"
+              @click="clearAll">Clear All</button>
+          </div>
         </div>
       </div>
       <div class="hola-columns-item">
@@ -49,7 +59,8 @@
         :file="img.file"
         :key="img.key"
         v-for="img in images"
-        @close="removeImage(img)"/>
+        @close="removeImage(img)"
+        :ref="`img-views`"/>
     </div>
   </div>
 </template>
@@ -106,24 +117,39 @@ export default class App extends Vue {
   private removeImage(img: Image) {
     this.images.splice(this.images.indexOf(img), 1)
   }
+  private clearAll() {
+    this.images.splice(0)
+  }
+  private downloadAll() {
+    for (const imgView of this.$refs['img-views']) {
+      (imgView as ImgView).download()
+    }
+  }
 }
 </script>
 
 <style lang="stylus">
-.ctrl-card > form > p
-  > label
-    display flex
-    > :first-child
+.ctrl-card
+  > form
+    margin-bottom 1.3em
+    > p > label
       display flex
-      align-items center
-      width 7ch
-      font-weight bold
-    > :last-child
-      width 5.5ch
-    > :nth-child(2)
-      flex-grow 99
-      flex-shrink 99
-      width 0
+      > :first-child
+        display flex
+        align-items center
+        width 7ch
+        font-weight bold
+      > :last-child
+        width 5.5ch
+      > :nth-child(2)
+        flex-grow 99
+        flex-shrink 99
+        width 0
+  > .global-actions
+    display flex
+    width 100%
+    > button
+      width 50%
 
 .select-card > div
   border var(--hola-primary-color) 7px dashed
