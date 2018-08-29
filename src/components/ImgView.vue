@@ -160,6 +160,9 @@ class Session {
         const w = (canvas.width = Math.max(1, Math.round(bitmap.width * config.scale)))
         const h = (canvas.height = Math.max(1, Math.round(bitmap.height * config.scale)))
         const context = canvas.getContext('2d')!
+        if ((context.imageSmoothingEnabled = config.smooth !== 'disabled') && 'imageSmoothingQuality' in context as any) {
+          (context as any).imageSmoothingQuality = config.smooth
+        }
         context.drawImage(bitmap, 0, 0, w, h)
         canvas.toBlob(
           blob => {

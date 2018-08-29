@@ -72,7 +72,8 @@ const defaultConfig: Config = {
   level: 0.92,
   scale: 1,
   type: isSupportWebP() ? 'image/webp' : 'image/jpeg',
-  compress: true
+  compress: true,
+  smooth: 'high'
 }
 
 const compressableMime = ['image/webp', 'image/jpeg']

@@ -24,6 +24,20 @@
         </select>
       </label>
     </p>
+    <p v-if="config.scale !== 1">
+      <label>
+        <span>Smooth:</span>
+        <select v-model="config.smooth" class="hola-form-ctrl">
+          <option value="disabled">Disabled</option>
+          <template v-if="isSupportSmoothQuality">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </template>
+          <option value="high" v-else>Enabled</option>
+        </select>
+      </label>
+    </p>
   </form>
 </template>
 
@@ -34,7 +48,8 @@ export interface Config {
   level: number
   scale: number
   type: string
-  compress: boolean
+  compress: boolean,
+  smooth: 'disabled' | "low" | "medium" | "high"
 }
 
 declare class ResizeObserver {
@@ -49,11 +64,16 @@ declare interface ResizeObserverEntry {
   readonly contentRect: DOMRectReadOnly;
 };
 
+function isSupportSmoothQuality() {
+  return 'imageSmoothingQuality' in document.createElement('canvas').getContext('2d')! as any
+}
+
 @Component
 export default class ConfigForm extends Vue {
   @Prop()
   private config!: Config
   private compact = false
+  private isSupportSmoothQuality = isSupportSmoothQuality()
   private mounted() {
     if (ResizeObserver) {
       const rzob = new ResizeObserver(entries => {
