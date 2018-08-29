@@ -40,7 +40,7 @@
       </div>
     </div>
   </div>
-  <div class="hola-container hola-layout-container hola-layout-container-sidebar-right" v-else>
+  <div class="hola-container hola-layout-container hola-layout-container-sidebar-right image-editor" v-else>
     <div class="hola-layout-main">
       <div class="hola-card hola-card-full-image">
         <img :src="(compressed || origin).src" :alt="title" class="hola-image"
@@ -66,7 +66,21 @@
             @click="close">exit_to_app</button>
         </div>
       </div>
-      <div class="hola-card">
+      <div class="hola-card editor-detail-card">
+        <table>
+          <tbody>
+            <tr>
+              <td>Title:</td>
+              <td contenteditable="true" spellcheck="false" ref="title">{{ title }}</td>
+            </tr>
+            <tr>
+              <td>Size:</td>
+              <td class="diff"><span :class="{ before: compressed }">{{ toKB(origin.size) }}KB</span>{{' '}}<span v-if="compressed" class="after">{{ toKB(compressed.size) }}KB</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hola-card editor-ctrl-card">
         <config-form :config="config"/>
       </div>
     </div>
@@ -227,6 +241,11 @@ export default class ImgView extends Vue {
 </script>
 
 <style lang="stylus">
+diff-before()
+  text-decoration line-through
+  color #EF5350
+diff-after()
+  color #66BB6A
 .image-card
   .image-headline
     width 100%
@@ -262,11 +281,10 @@ export default class ImgView extends Vue {
         text-align right
     > div.before
       > span
-        text-decoration line-through
-        color #EF5350
+        diff-before()
     > div.after
       > span
-        color #66BB6A
+        diff-after()
     no-diff()
       text-decoration inherit
       color inherit
@@ -278,13 +296,26 @@ export default class ImgView extends Vue {
         no-diff()
 .hola-button[disabled]
   box-shadow none
-.editor-action-card
-  > .image-actions
-    display flex
-    > button
-      margin 0
+.image-editor
+  .editor-action-card
+    > .image-actions
       display flex
-      justify-content space-around
-      align-items center
-      width 72px
+      > button
+        margin 0
+        display flex
+        justify-content space-around
+        align-items center
+        width 72px
+  .editor-detail-card
+    > table > tbody > tr
+      > td:first-child
+        font-weight 600
+        width 7ch
+      > td.diff
+        > span.before
+          diff-before()
+        > span.after
+          diff-after()
+      > td
+        vertical-align baseline
 </style>
