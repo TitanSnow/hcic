@@ -8,6 +8,7 @@
             <button
               class="hola-button hola-button-primary"
               type="button"
+              :disabled="images.length === 0"
               @click="downloadAll">Download All</button>
             <button
               class="hola-button"
