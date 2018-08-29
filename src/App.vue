@@ -45,6 +45,7 @@
     :file="editingImage.file"
     :key="editingImage.key"
     :editmode="true"
+    @close="editingImage = null"
     v-else/>
 </template>
 

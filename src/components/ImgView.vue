@@ -48,6 +48,24 @@
       </div>
     </div>
     <div class="hola-layout-sidebar hola-card-stack">
+      <div class="hola-card editor-action-card">
+        <div class="image-actions">
+          <button
+            class="hola-button hola-button-primary"
+            type="button"
+            disabled
+            v-if="compressing"><progress-circular indeterminate color="white" :size="18" :width="2"/></button>
+          <button
+            class="hola-button hola-button-primary material-icons"
+            type="button"
+            v-else
+            @click="download">save_alt</button>
+          <button
+            class="hola-button material-icons"
+            type="button"
+            @click="close">exit_to_app</button>
+        </div>
+      </div>
       <div class="hola-card">
         <config-form :config="config"/>
       </div>
@@ -258,6 +276,15 @@ export default class ImgView extends Vue {
     > div.before.no-diff, > div.after.no-diff
       > span
         no-diff()
-  .hola-button[disabled]
-    box-shadow none
+.hola-button[disabled]
+  box-shadow none
+.editor-action-card
+  > .image-actions
+    display flex
+    > button
+      margin 0
+      display flex
+      justify-content space-around
+      align-items center
+      width 72px
 </style>
