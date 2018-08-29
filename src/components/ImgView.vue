@@ -31,11 +31,11 @@
           <span :class="{
             'wh': true,
             'no-diff': whNoChange,
-          }" v-if="originWH">{{ originWH.width }}x{{ originWH.height }}</span>
+          }" v-if="originWH">{{ toReso(originWH) }}</span>
         </div>
         <div class="after" v-if="compressed">
           <span class="size">{{ toKB(compressed.size) }}KB</span>
-          <span class="wh" v-if="compressedWH" v-show="!whNoChange">{{ compressedWH.width }}x{{ compressedWH.height }}</span>
+          <span class="wh" v-if="compressedWH" v-show="!whNoChange">{{ toReso(compressedWH) }}</span>
         </div>
       </div>
     </div>
@@ -75,7 +75,21 @@
             </tr>
             <tr>
               <td>Size:</td>
-              <td class="diff"><span :class="{ before: compressed }">{{ toKB(origin.size) }}KB</span>{{' '}}<span v-if="compressed" class="after">{{ toKB(compressed.size) }}KB</span></td>
+              <td class="diff">
+                <span :class="{ before: compressed }">{{ toKB(origin.size) }}KB</span>{{' '}}
+                <span v-if="compressed" class="after">{{ toKB(compressed.size) }}KB</span>
+              </td>
+            </tr>
+            <tr v-if="originWH">
+              <td>Reso:</td>
+              <td class="diff">
+                <span :class="{ before: compressedWH && !whNoChange }">{{ toReso(originWH) }}</span>{{' '}}
+                <span v-if="compressedWH && !whNoChange" class="after">{{ toReso(compressedWH )}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Date:</td>
+              <td>{{ toDate(origin.blob.lastModified) }}</td>
             </tr>
           </tbody>
         </table>
@@ -216,6 +230,12 @@ export default class ImgView extends Vue {
   }
   private toKB(size: number) {
     return Math.round(size / 10.24) / 100
+  }
+  private toReso(wh: ImgWH) {
+    return `${wh.width}x${wh.height}`
+  }
+  private toDate(time: number) {
+    return new Date(time).toLocaleString()
   }
   private get whNoChange() {
     return (
