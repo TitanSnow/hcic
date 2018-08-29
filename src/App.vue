@@ -56,6 +56,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import ImgView from '@/components/ImgView.vue'
 import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
+import { shallowClone } from '@/utils'
 
 function isSupportWebP() {
   const canvas = document.createElement('canvas')
@@ -76,13 +77,9 @@ const defaultConfig: Config = {
 
 const compressableMime = ['image/webp', 'image/jpeg']
 
-function clone<T>(object: T): T {
-  return Object.assign({}, object)
-}
-
 @Component({ components: { ImgView, ConfigForm } })
 export default class App extends Vue {
-  private config: Config = clone(defaultConfig)
+  private config: Config = shallowClone(defaultConfig)
   private readonly images: Image[] = []
   private editingImage: Image | null = null
 
@@ -114,7 +111,7 @@ export default class App extends Vue {
     this.images.splice(this.images.indexOf(img), 1)
   }
   private resetConfig() {
-    this.config = clone(defaultConfig)
+    this.config = shallowClone(defaultConfig)
   }
   private clearAll() {
     this.images.splice(0)

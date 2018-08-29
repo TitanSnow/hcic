@@ -64,6 +64,16 @@
             class="hola-button material-icons"
             type="button"
             @click="close">exit_to_app</button>
+          <button
+            class="hola-button material-icons"
+            type="button"
+            :disabled="currentConfigHistoryIdx == 0"
+            @click="undo">undo</button>
+          <button
+            class="hola-button material-icons"
+            type="button"
+            :disabled="currentConfigHistoryIdx == configHistory.length - 1"
+            @click="redo">redo</button>
         </div>
       </div>
       <div class="hola-card editor-ctrl-card">
@@ -108,6 +118,7 @@ import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
 import VProgressCircular from 'vuetify/src/components/VProgressCircular/VProgressCircular'
 import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
+import { shallowClone, shallowEqual } from '@/utils'
 
 interface ImgWH {
   readonly width: number
@@ -176,6 +187,8 @@ export default class ImgView extends Vue {
   private compressedWH: ImgWH | null = null
   private originWH: ImgWH | null = null
   private compressing: boolean = true
+  private configHistory: Config[] = []
+  private currentConfigHistoryIdx: number = NaN
   public getDownloadBlob() {
     if (!this.compressing) {
       return this.compressed!.blob
@@ -225,8 +238,14 @@ export default class ImgView extends Vue {
   }
   private created() {
     const debouncedUpdateSession = debounce(this.updateSession.bind(this), 50)
+    const debouncedRecordConfigHistory = debounce(this.recordConfigHistory.bind(this), 50)
     this.$watch('origin', debouncedUpdateSession, { immediate: true })
-    this.$watch('config', debouncedUpdateSession, { deep: true })
+    this.$watch('config', () => {
+      debouncedUpdateSession()
+      debouncedRecordConfigHistory()
+    }, { deep: true })
+    this.configHistory.push(shallowClone(this.config))
+    this.currentConfigHistoryIdx = 0
   }
   private toKB(size: number) {
     return Math.round(size / 10.24) / 100
@@ -256,6 +275,19 @@ export default class ImgView extends Vue {
   }
   private showBig() {
     window.open(this.compressed!.src, '_blank')
+  }
+  private recordConfigHistory() {
+    if (!shallowEqual(this.config, this.configHistory[this.currentConfigHistoryIdx])) {
+      this.configHistory.splice(this.currentConfigHistoryIdx + 1)
+      this.configHistory.push(shallowClone(this.config))
+      ++this.currentConfigHistoryIdx
+    }
+  }
+  private undo() {
+    Object.assign(this.config, this.configHistory[--this.currentConfigHistoryIdx])
+  }
+  private redo() {
+    Object.assign(this.config, this.configHistory[++this.currentConfigHistoryIdx])
   }
 }
 </script>
@@ -316,16 +348,19 @@ diff-after()
         no-diff()
 .hola-button[disabled]
   box-shadow none
+  cursor not-allowed
 .image-editor
   .editor-action-card
+    padding 0
     > .image-actions
       display flex
+      width 100%
       > button
         margin 0
         display flex
         justify-content space-around
         align-items center
-        width 72px
+        width 25%
   .editor-detail-card
     > table > tbody > tr
       > td:first-child
