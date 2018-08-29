@@ -107,6 +107,7 @@
           </tbody>
         </table>
       </div>
+      <filter-form class="hola-card editor-filter-card" :filters="filters"/>
     </div>
   </div>
 </template>
@@ -118,6 +119,7 @@ import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
 import VProgressCircular from 'vuetify/src/components/VProgressCircular/VProgressCircular'
 import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
+import { Filters, default as FilterForm } from '@/components/FilterForm.vue'
 import { shallowClone, shallowEqual } from '@/utils'
 
 interface ImgWH {
@@ -150,7 +152,8 @@ class ImgState {
 class Session {
   constructor(
     public readonly origin: ImgState,
-    public readonly config: Config
+    public readonly config: Config,
+    public readonly filters: Filters
   ) {}
   public compress(): Promise<ImgState> {
     return new Promise(resolve => {
@@ -163,6 +166,7 @@ class Session {
         if ((context.imageSmoothingEnabled = config.smooth !== 'disabled') && 'imageSmoothingQuality' in context as any) {
           (context as any).imageSmoothingQuality = config.smooth
         }
+        (context as any).filter = this.filters.css.map(f => f.cssString()).join(' ')
         context.drawImage(bitmap, 0, 0, w, h)
         canvas.toBlob(
           blob => {
@@ -177,7 +181,7 @@ class Session {
   }
 }
 
-@Component({components: {'progress-circular': VProgressCircular, ConfigForm}})
+@Component({components: {'progress-circular': VProgressCircular, ConfigForm, FilterForm}})
 export default class ImgView extends Vue {
   @Prop()
   private file!: File
@@ -185,6 +189,8 @@ export default class ImgView extends Vue {
   private config!: Config
   @Prop({ default: false })
   private editmode!: boolean
+  @Prop()
+  private filters!: Filters
   private compressed: ImgState | null = null
   private session: Session | null = null
   private compressedWH: ImgWH | null = null
@@ -210,7 +216,7 @@ export default class ImgView extends Vue {
     return new ImgState(this.file)
   }
   private updateSession() {
-    this.session = new Session(this.origin, this.config)
+    this.session = new Session(this.origin, this.config, this.filters)
   }
   private get title() {
     return this.file.name
@@ -247,6 +253,7 @@ export default class ImgView extends Vue {
       debouncedUpdateSession()
       debouncedRecordConfigHistory()
     }, { deep: true })
+    this.$watch('filters', debouncedUpdateSession, { deep: true })
     this.configHistory.push(shallowClone(this.config))
     this.currentConfigHistoryIdx = 0
   }
@@ -376,4 +383,6 @@ diff-after()
           diff-after()
       > td
         vertical-align baseline
+  .editor-filter-card
+    font-size .9em
 </style>

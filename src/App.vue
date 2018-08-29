@@ -33,6 +33,7 @@
       </div>
       <img-view
         :config="config"
+        :filters="filters"
         :file="img.file"
         :key="img.key"
         v-for="img in images"
@@ -43,6 +44,7 @@
   </div>
   <img-view
     :config="config"
+    :filters="filters"
     :file="editingImage.file"
     :key="editingImage.key"
     :editmode="true"
@@ -57,7 +59,8 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import ImgView from '@/components/ImgView.vue'
 import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
-import { shallowClone } from '@/utils'
+import { Filters } from '@/components/FilterForm.vue'
+import { shallowClone, deepClone } from '@/utils'
 
 function isSupportWebP() {
   const canvas = document.createElement('canvas')
@@ -76,6 +79,9 @@ const defaultConfig: Config = {
   compress: true,
   smooth: 'high'
 }
+const defaultFilters: Filters = {
+  css: []
+}
 
 const compressableMime = ['image/webp', 'image/jpeg']
 
@@ -84,6 +90,7 @@ export default class App extends Vue {
   private config: Config = shallowClone(defaultConfig)
   private readonly images: Image[] = []
   private editingImage: Image | null = null
+  private filters: Filters = deepClone(defaultFilters)
 
   private createFileInputElement() {
     const elem = document.createElement('input')
@@ -115,9 +122,13 @@ export default class App extends Vue {
   private resetConfig() {
     this.config = shallowClone(defaultConfig)
   }
+  private resetFilters() {
+    this.filters = deepClone(defaultFilters)
+  }
   private clearAll() {
     this.images.splice(0)
     this.resetConfig()
+    this.resetFilters()
   }
   private async downloadAll() {
     const zip = new JSZip()

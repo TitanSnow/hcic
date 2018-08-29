@@ -10,3 +10,6 @@ export function shallowEqual<T>(a: T, b: T): boolean {
   }
   return true
 }
+
+import cloneDeep from 'lodash/cloneDeep'
+export const deepClone = cloneDeep
