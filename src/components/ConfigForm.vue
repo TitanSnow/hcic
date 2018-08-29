@@ -75,7 +75,7 @@ export default class ConfigForm extends Vue {
   private compact = false
   private isSupportSmoothQuality = isSupportSmoothQuality()
   private mounted() {
-    if (ResizeObserver) {
+    if ('ResizeObserver' in window as any) {
       const rzob = new ResizeObserver(entries => {
         this.compact = entries[0].contentRect.width < 250
       })
