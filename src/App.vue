@@ -51,7 +51,6 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import clone from 'lodash/clone'
 import nanoid from 'nanoid'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
@@ -76,6 +75,10 @@ const defaultConfig: Config = {
 }
 
 const compressableMime = ['image/webp', 'image/jpeg']
+
+function clone<T>(object: T): T {
+  return Object.assign({}, object)
+}
 
 @Component({ components: { ImgView, ConfigForm } })
 export default class App extends Vue {
