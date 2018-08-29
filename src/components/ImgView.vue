@@ -66,6 +66,9 @@
             @click="close">exit_to_app</button>
         </div>
       </div>
+      <div class="hola-card editor-ctrl-card">
+        <config-form :config="config"/>
+      </div>
       <div class="hola-card editor-detail-card">
         <table>
           <tbody>
@@ -93,9 +96,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      <div class="hola-card editor-ctrl-card">
-        <config-form :config="config"/>
       </div>
     </div>
   </div>
