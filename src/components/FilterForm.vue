@@ -1,7 +1,13 @@
 <template>
   <div>
     <details>
-      <summary>CSS Filters</summary>
+      <summary>
+        <span>CSS Filters</span>
+        <button
+          type="button"
+          class="hola-button hola-button-primary material-icons"
+          @click="addCSSFilter">add</button>
+      </summary>
       <ul>
         <li v-if="filters.css" v-for="f in filters.css" :key="f.key" class="css-filter">
           <div>
@@ -16,10 +22,6 @@
             @click="removeCSSFilter(f)">close</button>
         </li>
       </ul>
-      <button
-        type="button"
-        class="hola-button material-icons"
-        @click="addCSSFilter">add</button>
     </details>
   </div>
 </template>
@@ -28,6 +30,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import nanoid from 'nanoid'
 
+const cssFilterFunctions = ['blur', 'brightness', 'contrast', 'drop-shadow', 'grayscale', 'hue-rotate', 'invert', 'opacity', 'saturate', 'sepia']
 type CSSFilterFunction = 'blur' | 'brightness' | 'contrast' | 'drop-shadow' | 'grayscale' | 'hue-rotate' | 'invert' | 'opacity' | 'saturate' | 'sepia'
 class CSSFilter {
   constructor(
@@ -37,6 +40,9 @@ class CSSFilter {
   ) {}
   public cssString() {
     return `${this.functionName}(${this.args})`
+  }
+  public isValidFunctionName() {
+    return cssFilterFunctions.includes(this.functionName)
   }
 }
 export interface Filters {
@@ -60,10 +66,19 @@ export default class FilterForm extends Vue {
 <style lang="stylus" scoped>
 details > summary
   margin-left -1.5ch
+  width calc(100% + 1.5ch)
+  display flex
+  align-items center
+  > span
+    flex-grow 99
+  > button
+    padding 0
+    margin 0
 .css-filter
   display flex
   justify-content space-between
   align-items center
+  border-top solid 1px #eee
   > :first-child
     > span:nth-child(1), span:nth-child(2), span:nth-child(4)
       font-weight 500
@@ -71,4 +86,5 @@ details > summary
       font-family monospace
   > button
     padding 0
+    margin 0
 </style>
