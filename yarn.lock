@@ -3292,6 +3292,14 @@ mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
+monaco-editor-webpack-plugin@^1.4.0:
+  version "1.4.0"
+  resolved "http://registry.npm.taobao.org/monaco-editor-webpack-plugin/download/monaco-editor-webpack-plugin-1.4.0.tgz#7324258ab3695464cfe3bc12edb2e8c55b80d92f"
+
+monaco-editor@^0.13.1:
+  version "0.13.1"
+  resolved "http://registry.npm.taobao.org/monaco-editor/download/monaco-editor-0.13.1.tgz#6b9ce20e4d1c945042d256825eb133cb23315a52"
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/move-concurrently/download/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -3321,6 +3329,10 @@ multicast-dns@^6.0.1:
 nan@^2.9.2:
   version "2.11.0"
   resolved "http://registry.npm.taobao.org/nan/download/nan-2.11.0.tgz#574e360e4d954ab16966ec102c0c049fd961a099"
+
+nano-assign@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/nano-assign/download/nano-assign-1.0.0.tgz#499f4f8a1ae801f2405863e6946ca8568d666e4e"
 
 nanoid@^1.2.1:
   version "1.2.1"
@@ -5417,6 +5429,13 @@ vue-loader@^15.3.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-monaco@^0.2.0:
+  version "0.2.0"
+  resolved "http://registry.npm.taobao.org/vue-monaco/download/vue-monaco-0.2.0.tgz#508e90b8c9c3c90b6e89a68c6602a5a76f2b3d55"
+  dependencies:
+    monaco-editor "^0.13.1"
+    nano-assign "^1.0.0"
 
 vue-property-decorator@^7.0.0:
   version "7.0.0"

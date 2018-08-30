@@ -99,7 +99,7 @@
                 @click="moveDownJSFilter(f)">arrow_downward</button>
             </div>
           </div>
-          <textarea :ref="`textarea-${f.key}`" :value="f.code"></textarea>
+          <monaco :ref="`textarea-${f.key}`" :value="f.code" language="javascript" :options="{ lineNumbers: 'off' }" class="js-filter-editor"/>
         </li>
       </ul>
       <button
@@ -117,8 +117,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import nanoid from 'nanoid'
-
-const filterInfo = require('json-loader!yaml-loader!@/data/filters.yml')
+import Monaco from 'vue-monaco'
+import filterInfo from 'json-loader!yaml-loader!@/data/filters.yml'
 
 class CSSFilter {
   constructor(
@@ -145,7 +145,7 @@ export interface Filters {
   js: JSFilter[],
 }
 
-@Component
+@Component({components: {Monaco}})
 export default class FilterForm extends Vue {
   @Prop()
   private filters!: Filters
@@ -222,7 +222,7 @@ export default class FilterForm extends Vue {
     }
   }
   private updateJSFilterCode(f: JSFilter) {
-    f.code = (this.$refs[`textarea-${f.key}`] as HTMLTextAreaElement[])[0].value
+    f.code = (this.$refs[`textarea-${f.key}`] as any[])[0].getMonaco().getValue()
   }
 }
 </script>
@@ -264,6 +264,9 @@ export default class FilterForm extends Vue {
         justify-content space-between
         > :first-child
           font-weight 500
+      > .js-filter-editor
+        height 200px
+        width 100%
   .actions > button
     padding .1em
     background transparent

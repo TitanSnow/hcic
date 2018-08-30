@@ -16,6 +16,7 @@
     "nanoid": "^1.2.1",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
+    "vue-monaco": "^0.2.0",
     "vue-property-decorator": "^7.0.0"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@vue/cli-plugin-typescript": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "json-loader": "^0.5.7",
+    "monaco-editor-webpack-plugin": "^1.4.0",
     "prettier": "^1.14.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
