@@ -28,7 +28,7 @@
     "@types/uuid": "^3.4.3",
     "@vue/cli-plugin-typescript": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
-    "prettier": "git+https://github.com/prettier/prettier.git",
+    "prettier": "^1.14.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "tslint-config-prettier": "^1.15.0",
