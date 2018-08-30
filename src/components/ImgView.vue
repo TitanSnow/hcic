@@ -142,7 +142,7 @@ class ImgState {
       this.bitmapPromise.then(bitmap => {
         resolve({
           width: bitmap.width,
-          height: bitmap.height
+          height: bitmap.height,
         })
         return bitmap
       })
@@ -160,13 +160,25 @@ class Session {
       this.origin.bitmapPromise.then(bitmap => {
         const canvas = document.createElement('canvas')
         const config = this.config
-        const w = (canvas.width = Math.max(1, Math.round(bitmap.width * config.scale)))
-        const h = (canvas.height = Math.max(1, Math.round(bitmap.height * config.scale)))
+        const w = (canvas.width = Math.max(
+          1,
+          Math.round(bitmap.width * config.scale)
+        ))
+        const h = (canvas.height = Math.max(
+          1,
+          Math.round(bitmap.height * config.scale)
+        ))
         const context = canvas.getContext('2d')!
-        if ((context.imageSmoothingEnabled = config.smooth !== 'disabled') && 'imageSmoothingQuality' in context as any) {
-          (context as any).imageSmoothingQuality = config.smooth
+        if (
+          (context.imageSmoothingEnabled = config.smooth !== 'disabled') &&
+          'imageSmoothingQuality' in (context as any)
+        ) {
+          ;(context as any).imageSmoothingQuality = config.smooth
         }
-        (context as any).filter = this.filters.css.filter(f => f.isValidFunctionName()).map(f => f.cssString()).join(' ')
+        ;(context as any).filter = this.filters.css
+          .filter(f => f.isValidFunctionName())
+          .map(f => f.cssString())
+          .join(' ')
         context.drawImage(bitmap, 0, 0, w, h)
         canvas.toBlob(
           blob => {
@@ -181,7 +193,13 @@ class Session {
   }
 }
 
-@Component({components: {'progress-circular': VProgressCircular, ConfigForm, FilterForm}})
+@Component({
+  components: {
+    'progress-circular': VProgressCircular,
+    ConfigForm,
+    FilterForm,
+  },
+})
 export default class ImgView extends Vue {
   @Prop()
   private file!: File
@@ -247,12 +265,19 @@ export default class ImgView extends Vue {
   }
   private created() {
     const debouncedUpdateSession = debounce(this.updateSession.bind(this), 50)
-    const debouncedRecordConfigHistory = debounce(this.recordConfigHistory.bind(this), 50)
+    const debouncedRecordConfigHistory = debounce(
+      this.recordConfigHistory.bind(this),
+      50
+    )
     this.$watch('origin', debouncedUpdateSession, { immediate: true })
-    this.$watch('config', () => {
-      debouncedUpdateSession()
-      debouncedRecordConfigHistory()
-    }, { deep: true })
+    this.$watch(
+      'config',
+      () => {
+        debouncedUpdateSession()
+        debouncedRecordConfigHistory()
+      },
+      { deep: true }
+    )
     this.$watch('filters', debouncedUpdateSession, { deep: true })
     this.configHistory.push(shallowClone(this.config))
     this.currentConfigHistoryIdx = 0
@@ -287,17 +312,28 @@ export default class ImgView extends Vue {
     window.open(this.compressed!.src, '_blank')
   }
   private recordConfigHistory() {
-    if (!shallowEqual(this.config, this.configHistory[this.currentConfigHistoryIdx])) {
+    if (
+      !shallowEqual(
+        this.config,
+        this.configHistory[this.currentConfigHistoryIdx]
+      )
+    ) {
       this.configHistory.splice(this.currentConfigHistoryIdx + 1)
       this.configHistory.push(shallowClone(this.config))
       ++this.currentConfigHistoryIdx
     }
   }
   private undo() {
-    Object.assign(this.config, this.configHistory[--this.currentConfigHistoryIdx])
+    Object.assign(
+      this.config,
+      this.configHistory[--this.currentConfigHistoryIdx]
+    )
   }
   private redo() {
-    Object.assign(this.config, this.configHistory[++this.currentConfigHistoryIdx])
+    Object.assign(
+      this.config,
+      this.configHistory[++this.currentConfigHistoryIdx]
+    )
   }
 }
 </script>

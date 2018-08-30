@@ -77,10 +77,10 @@ const defaultConfig: Config = {
   scale: 1,
   type: isSupportWebP() ? 'image/webp' : 'image/jpeg',
   compress: true,
-  smooth: 'high'
+  smooth: 'high',
 }
 const defaultFilters: Filters = {
-  css: []
+  css: [],
 }
 
 const compressableMime = ['image/webp', 'image/jpeg']

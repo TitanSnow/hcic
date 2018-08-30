@@ -20,13 +20,13 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'rgb(66, 133, 244)'
+      default: 'rgb(66, 133, 244)',
     },
     size: {
       type: Number,
-      default: 28
-    }
-  }
+      default: 28,
+    },
+  },
 }
 </script>
 
@@ -34,56 +34,50 @@ export default {
 <style scoped>
 .spinner-wrapper {
   display: inline-block;
-        position: relative;
-        width: 28px;
-        height: 28px;
+  position: relative;
+  width: 28px;
+  height: 28px;
 
+  --paper-spinner-container-rotation-duration: 1568ms;
 
-        --paper-spinner-container-rotation-duration: 1568ms;
+  --paper-spinner-expand-contract-duration: 1333ms;
 
+  --paper-spinner-full-cycle-duration: 5332ms;
 
-        --paper-spinner-expand-contract-duration: 1333ms;
-
-
-        --paper-spinner-full-cycle-duration: 5332ms;
-
-
-        --paper-spinner-cooldown-duration: 400ms;
+  --paper-spinner-cooldown-duration: 400ms;
 }
 
 .spinner-container {
   width: 100%;
-        height: 100%;
+  height: 100%;
 
-
-        direction: ltr;
+  direction: ltr;
 }
 
 .spinner-container.active {
-  animation: container-rotate var(--paper-spinner-container-rotation-duration) linear infinite;
+  animation: container-rotate var(--paper-spinner-container-rotation-duration)
+    linear infinite;
 }
 
 @-webkit-keyframes container-rotate {
-to {
-  -webkit-transform: rotate(360deg)
-}
-
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes container-rotate {
-to {
-  transform: rotate(360deg)
-}
-
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spinner-layer {
   position: absolute;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        white-space: nowrap;
-        border-color: var(--paper-spinner-color, var(--google-blue-500));
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  white-space: nowrap;
+  border-color: var(--paper-spinner-color, var(--google-blue-500));
 }
 
 .layer-1 {
@@ -104,10 +98,10 @@ to {
 
 .active .spinner-layer {
   animation-name: fill-unfill-rotate;
-        animation-duration: var(--paper-spinner-full-cycle-duration);
-        animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
-        animation-iteration-count: infinite;
-        opacity: 1;
+  animation-duration: var(--paper-spinner-full-cycle-duration);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-iteration-count: infinite;
+  opacity: 1;
 }
 
 .active .spinner-layer.layer-1 {
@@ -127,331 +121,323 @@ to {
 }
 
 @-webkit-keyframes fill-unfill-rotate {
-12.5% {
-  -webkit-transform: rotate(135deg)
-}
+  12.5% {
+    -webkit-transform: rotate(135deg);
+  }
 
-25% {
-  -webkit-transform: rotate(270deg)
-}
+  25% {
+    -webkit-transform: rotate(270deg);
+  }
 
-37.5% {
-  -webkit-transform: rotate(405deg)
-}
+  37.5% {
+    -webkit-transform: rotate(405deg);
+  }
 
-50% {
-  -webkit-transform: rotate(540deg)
-}
+  50% {
+    -webkit-transform: rotate(540deg);
+  }
 
-62.5% {
-  -webkit-transform: rotate(675deg)
-}
+  62.5% {
+    -webkit-transform: rotate(675deg);
+  }
 
-75% {
-  -webkit-transform: rotate(810deg)
-}
+  75% {
+    -webkit-transform: rotate(810deg);
+  }
 
-87.5% {
-  -webkit-transform: rotate(945deg)
-}
+  87.5% {
+    -webkit-transform: rotate(945deg);
+  }
 
-to {
-  -webkit-transform: rotate(1080deg)
-}
-
+  to {
+    -webkit-transform: rotate(1080deg);
+  }
 }
 
 @keyframes fill-unfill-rotate {
-12.5% {
-  transform: rotate(135deg)
-}
+  12.5% {
+    transform: rotate(135deg);
+  }
 
-25% {
-  transform: rotate(270deg)
-}
+  25% {
+    transform: rotate(270deg);
+  }
 
-37.5% {
-  transform: rotate(405deg)
-}
+  37.5% {
+    transform: rotate(405deg);
+  }
 
-50% {
-  transform: rotate(540deg)
-}
+  50% {
+    transform: rotate(540deg);
+  }
 
-62.5% {
-  transform: rotate(675deg)
-}
+  62.5% {
+    transform: rotate(675deg);
+  }
 
-75% {
-  transform: rotate(810deg)
-}
+  75% {
+    transform: rotate(810deg);
+  }
 
-87.5% {
-  transform: rotate(945deg)
-}
+  87.5% {
+    transform: rotate(945deg);
+  }
 
-to {
-  transform: rotate(1080deg)
-}
-
+  to {
+    transform: rotate(1080deg);
+  }
 }
 
 @-webkit-keyframes layer-1-fade-in-out {
-0% {
-  opacity: 1
-}
+  0% {
+    opacity: 1;
+  }
 
-25% {
-  opacity: 1
-}
+  25% {
+    opacity: 1;
+  }
 
-26% {
-  opacity: 0
-}
+  26% {
+    opacity: 0;
+  }
 
-89% {
-  opacity: 0
-}
+  89% {
+    opacity: 0;
+  }
 
-90% {
-  opacity: 1
-}
+  90% {
+    opacity: 1;
+  }
 
-to {
-  opacity: 1
-}
-
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes layer-1-fade-in-out {
-0% {
-  opacity: 1
-}
+  0% {
+    opacity: 1;
+  }
 
-25% {
-  opacity: 1
-}
+  25% {
+    opacity: 1;
+  }
 
-26% {
-  opacity: 0
-}
+  26% {
+    opacity: 0;
+  }
 
-89% {
-  opacity: 0
-}
+  89% {
+    opacity: 0;
+  }
 
-90% {
-  opacity: 1
-}
+  90% {
+    opacity: 1;
+  }
 
-to {
-  opacity: 1
-}
-
+  to {
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes layer-2-fade-in-out {
-0% {
-  opacity: 0
-}
+  0% {
+    opacity: 0;
+  }
 
-15% {
-  opacity: 0
-}
+  15% {
+    opacity: 0;
+  }
 
-25% {
-  opacity: 1
-}
+  25% {
+    opacity: 1;
+  }
 
-50% {
-  opacity: 1
-}
+  50% {
+    opacity: 1;
+  }
 
-51% {
-  opacity: 0
-}
+  51% {
+    opacity: 0;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes layer-2-fade-in-out {
-0% {
-  opacity: 0
-}
+  0% {
+    opacity: 0;
+  }
 
-15% {
-  opacity: 0
-}
+  15% {
+    opacity: 0;
+  }
 
-25% {
-  opacity: 1
-}
+  25% {
+    opacity: 1;
+  }
 
-50% {
-  opacity: 1
-}
+  50% {
+    opacity: 1;
+  }
 
-51% {
-  opacity: 0
-}
+  51% {
+    opacity: 0;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 @-webkit-keyframes layer-3-fade-in-out {
-0% {
-  opacity: 0
-}
+  0% {
+    opacity: 0;
+  }
 
-40% {
-  opacity: 0
-}
+  40% {
+    opacity: 0;
+  }
 
-50% {
-  opacity: 1
-}
+  50% {
+    opacity: 1;
+  }
 
-75% {
-  opacity: 1
-}
+  75% {
+    opacity: 1;
+  }
 
-76% {
-  opacity: 0
-}
+  76% {
+    opacity: 0;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes layer-3-fade-in-out {
-0% {
-  opacity: 0
-}
+  0% {
+    opacity: 0;
+  }
 
-40% {
-  opacity: 0
-}
+  40% {
+    opacity: 0;
+  }
 
-50% {
-  opacity: 1
-}
+  50% {
+    opacity: 1;
+  }
 
-75% {
-  opacity: 1
-}
+  75% {
+    opacity: 1;
+  }
 
-76% {
-  opacity: 0
-}
+  76% {
+    opacity: 0;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 @-webkit-keyframes layer-4-fade-in-out {
-0% {
-  opacity: 0
-}
+  0% {
+    opacity: 0;
+  }
 
-65% {
-  opacity: 0
-}
+  65% {
+    opacity: 0;
+  }
 
-75% {
-  opacity: 1
-}
+  75% {
+    opacity: 1;
+  }
 
-90% {
-  opacity: 1
-}
+  90% {
+    opacity: 1;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes layer-4-fade-in-out {
-0% {
-  opacity: 0
-}
+  0% {
+    opacity: 0;
+  }
 
-65% {
-  opacity: 0
-}
+  65% {
+    opacity: 0;
+  }
 
-75% {
-  opacity: 1
-}
+  75% {
+    opacity: 1;
+  }
 
-90% {
-  opacity: 1
-}
+  90% {
+    opacity: 1;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 .circle-clipper {
   display: inline-block;
-        position: relative;
-        width: 50%;
-        height: 100%;
-        overflow: hidden;
-        border-color: inherit;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  border-color: inherit;
 }
 
 .spinner-layer::after {
   left: 45%;
-        width: 10%;
-        border-top-style: solid;
+  width: 10%;
+  border-top-style: solid;
 }
 
-.spinner-layer::after, .circle-clipper::after {
+.spinner-layer::after,
+.circle-clipper::after {
   content: '';
-        box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        border-width: var(--paper-spinner-stroke-width, 3px);
-        border-color: inherit;
-        border-radius: 50%;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  border-width: var(--paper-spinner-stroke-width, 3px);
+  border-color: inherit;
+  border-radius: 50%;
 }
 
 .circle-clipper::after {
   bottom: 0;
-        width: 200%;
-        border-style: solid;
-        border-bottom-color: transparent !important;
+  width: 200%;
+  border-style: solid;
+  border-bottom-color: transparent !important;
 }
 
 .circle-clipper.left::after {
   left: 0;
-        border-right-color: transparent !important;
-        transform: rotate(129deg);
+  border-right-color: transparent !important;
+  transform: rotate(129deg);
 }
 
 .circle-clipper.right::after {
   left: -100%;
-        border-left-color: transparent !important;
-        transform: rotate(-129deg);
+  border-left-color: transparent !important;
+  transform: rotate(-129deg);
 }
 
-.active .gap-patch::after, .active .circle-clipper::after {
+.active .gap-patch::after,
+.active .circle-clipper::after {
   animation-duration: var(--paper-spinner-expand-contract-duration);
-        animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
-        animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-iteration-count: infinite;
 }
 
 .active .circle-clipper.left::after {
@@ -463,88 +449,84 @@ to {
 }
 
 @-webkit-keyframes left-spin {
-0% {
-  -webkit-transform: rotate(130deg)
-}
+  0% {
+    -webkit-transform: rotate(130deg);
+  }
 
-50% {
-  -webkit-transform: rotate(-5deg)
-}
+  50% {
+    -webkit-transform: rotate(-5deg);
+  }
 
-to {
-  -webkit-transform: rotate(130deg)
-}
-
+  to {
+    -webkit-transform: rotate(130deg);
+  }
 }
 
 @keyframes left-spin {
-0% {
-  transform: rotate(130deg)
-}
+  0% {
+    transform: rotate(130deg);
+  }
 
-50% {
-  transform: rotate(-5deg)
-}
+  50% {
+    transform: rotate(-5deg);
+  }
 
-to {
-  transform: rotate(130deg)
-}
-
+  to {
+    transform: rotate(130deg);
+  }
 }
 
 @-webkit-keyframes right-spin {
-0% {
-  -webkit-transform: rotate(-130deg)
-}
+  0% {
+    -webkit-transform: rotate(-130deg);
+  }
 
-50% {
-  -webkit-transform: rotate(5deg)
-}
+  50% {
+    -webkit-transform: rotate(5deg);
+  }
 
-to {
-  -webkit-transform: rotate(-130deg)
-}
-
+  to {
+    -webkit-transform: rotate(-130deg);
+  }
 }
 
 @keyframes right-spin {
-0% {
-  transform: rotate(-130deg)
-}
+  0% {
+    transform: rotate(-130deg);
+  }
 
-50% {
-  transform: rotate(5deg)
-}
+  50% {
+    transform: rotate(5deg);
+  }
 
-to {
-  transform: rotate(-130deg)
-}
-
+  to {
+    transform: rotate(-130deg);
+  }
 }
 
 .spinner-container.cooldown {
-  animation: container-rotate var(--paper-spinner-container-rotation-duration) linear infinite, fade-out var(--paper-spinner-cooldown-duration) cubic-bezier(0.4, 0.0, 0.2, 1);
+  animation: container-rotate var(--paper-spinner-container-rotation-duration)
+      linear infinite,
+    fade-out var(--paper-spinner-cooldown-duration) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @-webkit-keyframes fade-out {
-0% {
-  opacity: 1
-}
+  0% {
+    opacity: 1;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes fade-out {
-0% {
-  opacity: 1
-}
+  0% {
+    opacity: 1;
+  }
 
-to {
-  opacity: 0
-}
-
+  to {
+    opacity: 0;
+  }
 }
 </style>

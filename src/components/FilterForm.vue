@@ -30,8 +30,29 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import nanoid from 'nanoid'
 
-const cssFilterFunctions = ['blur', 'brightness', 'contrast', 'drop-shadow', 'grayscale', 'hue-rotate', 'invert', 'opacity', 'saturate', 'sepia']
-type CSSFilterFunction = 'blur' | 'brightness' | 'contrast' | 'drop-shadow' | 'grayscale' | 'hue-rotate' | 'invert' | 'opacity' | 'saturate' | 'sepia'
+const cssFilterFunctions = [
+  'blur',
+  'brightness',
+  'contrast',
+  'drop-shadow',
+  'grayscale',
+  'hue-rotate',
+  'invert',
+  'opacity',
+  'saturate',
+  'sepia',
+]
+type CSSFilterFunction =
+  | 'blur'
+  | 'brightness'
+  | 'contrast'
+  | 'drop-shadow'
+  | 'grayscale'
+  | 'hue-rotate'
+  | 'invert'
+  | 'opacity'
+  | 'saturate'
+  | 'sepia'
 class CSSFilter {
   constructor(
     public functionName: CSSFilterFunction,
@@ -54,7 +75,12 @@ export default class FilterForm extends Vue {
   @Prop()
   private filters!: Filters
   private addCSSFilter() {
-    this.filters.css.push(new CSSFilter(prompt('function name')! as CSSFilterFunction, prompt('args')!))
+    this.filters.css.push(
+      new CSSFilter(
+        prompt('function name')! as CSSFilterFunction,
+        prompt('args')!
+      )
+    )
   }
   private removeCSSFilter(f: CSSFilter) {
     const fs = this.filters.css

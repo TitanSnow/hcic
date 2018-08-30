@@ -48,8 +48,8 @@ export interface Config {
   level: number
   scale: number
   type: string
-  compress: boolean,
-  smooth: 'disabled' | "low" | "medium" | "high"
+  compress: boolean
+  smooth: 'disabled' | 'low' | 'medium' | 'high'
 }
 
 declare class ResizeObserver {
@@ -58,14 +58,20 @@ declare class ResizeObserver {
   public unobserve(target: Element): void
   public disconnect(): void
 }
-declare type ResizeObserverCallback = (entries: ResizeObserverEntry[], observer: ResizeObserver) => void;
+declare type ResizeObserverCallback = (
+  entries: ResizeObserverEntry[],
+  observer: ResizeObserver
+) => void
 declare interface ResizeObserverEntry {
-  readonly target: Element;
-  readonly contentRect: DOMRectReadOnly;
-};
+  readonly target: Element
+  readonly contentRect: DOMRectReadOnly
+}
 
 function isSupportSmoothQuality() {
-  return 'imageSmoothingQuality' in document.createElement('canvas').getContext('2d')! as any
+  return (
+    'imageSmoothingQuality' in
+    (document.createElement('canvas').getContext('2d')! as any)
+  )
 }
 
 @Component
@@ -75,7 +81,7 @@ export default class ConfigForm extends Vue {
   private compact = false
   private isSupportSmoothQuality = isSupportSmoothQuality()
   private mounted() {
-    if ('ResizeObserver' in window as any) {
+    if ('ResizeObserver' in (window as any)) {
       const rzob = new ResizeObserver(entries => {
         this.compact = entries[0].contentRect.width < 250
       })
