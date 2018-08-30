@@ -176,7 +176,21 @@ class Session {
         ;(context as any).filter = this.filters.css
           .map(f => f.toCssString())
           .join(' ')
+        this.filters.js.filter(f => f.type === 'before').forEach(f => {
+          try {
+            f.toFunction().call(null, canvas, context)
+          } catch (e) {
+            console.error(e)
+          }
+        })
         context.drawImage(bitmap, 0, 0, w, h)
+        this.filters.js.filter(f => f.type === 'after').forEach(f => {
+          try {
+            f.toFunction().call(null, canvas, context)
+          } catch (e) {
+            console.error(e)
+          }
+        })
         canvas.toBlob(
           blob => {
             resolve(new ImgState(blob!))

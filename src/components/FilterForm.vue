@@ -71,8 +71,45 @@
       </ul>
       <button
         type="button"
-        class="hola-button"
+        class="hola-button font-inherit"
         @click="addCSSFilter">Add Filter</button>
+    </details>
+    <details>
+      <summary>JS Filters</summary>
+      <ul class="js-filter-list">
+        <li v-for="f in filters.js" :key="f.key">
+          <div>
+            <div>'{{ f.type === 'before' ? 'Before' : 'After'}}' Filter</div>
+            <div class="actions">
+              <button
+                type="button"
+                class="material-icons hola-button"
+                @click="updateJSFilterCode(f)">check</button>
+              <button
+                type="button"
+                class="material-icons hola-button"
+                @click="removeJSFilter(f)">close</button>
+              <button
+                type="button"
+                class="material-icons hola-button"
+                @click="moveUpJSFilter(f)">arrow_upward</button>
+              <button
+                type="button"
+                class="material-icons hola-button"
+                @click="moveDownJSFilter(f)">arrow_downward</button>
+            </div>
+          </div>
+          <textarea :ref="`textarea-${f.key}`" :value="f.code"></textarea>
+        </li>
+      </ul>
+      <button
+        type="button"
+        class="hola-button font-inherit"
+        @click="addJSFilter('before')">Add 'Before' Filter</button>
+      <button
+        type="button"
+        class="hola-button font-inherit"
+        @click="addJSFilter('after')">Add 'After' Filter</button>
     </details>
   </div>
 </template>
@@ -93,8 +130,19 @@ class CSSFilter {
     return `${this.functionName}(${this.args})`
   }
 }
+class JSFilter {
+  constructor(
+    public code: string,
+    public type: 'before' | 'after',
+    public readonly key = nanoid()
+  ) {}
+  public toFunction() {
+    return Function('$canvas', '$context', this.code)
+  }
+}
 export interface Filters {
-  css: CSSFilter[]
+  css: CSSFilter[],
+  js: JSFilter[],
 }
 
 @Component
@@ -150,6 +198,32 @@ export default class FilterForm extends Vue {
       f.args = this.addCSSFilterFunctionArgUnit(argInfo.default, argInfo.type)
     }
   }
+  private addJSFilter(type: 'before' | 'after') {
+    this.filters.js.push(new JSFilter('', type))
+  }
+  private removeJSFilter(f: JSFilter) {
+    const fs = this.filters.js
+    fs.splice(fs.indexOf(f), 1)
+  }
+  private moveUpJSFilter(f: JSFilter) {
+    const fs = this.filters.js
+    const idx = fs.indexOf(f)
+    if (idx > 0) {
+      fs.splice(idx, 1)
+      fs.splice(idx - 1, 0, f)
+    }
+  }
+  private moveDownJSFilter(f: JSFilter) {
+    const fs = this.filters.js
+    const idx = fs.indexOf(f)
+    if (idx < fs.length - 1) {
+      fs.splice(idx, 1)
+      fs.splice(idx + 1, 0, f)
+    }
+  }
+  private updateJSFilterCode(f: JSFilter) {
+    f.code = (this.$refs[`textarea-${f.key}`] as HTMLTextAreaElement[])[0].value
+  }
 }
 </script>
 
@@ -173,17 +247,28 @@ export default class FilterForm extends Vue {
         flex-direction column
         > .hola-form-ctrl:first-child
           border-right none
-        > .actions > button
-          padding .1em
-          background transparent
-          color #999
       > :last-child
         width calc(100% - 11ch)
         display flex
         flex-direction column
         > .hola-form-ctrl:first-child
           border-bottom none
-    + button
-      font-family inherit
-      font-size inherit
+  ul.js-filter-list
+    margin-bottom 1em
+    > li
+      display block
+      margin-top 1em
+      > div:first-child
+        display flex
+        align-items center
+        justify-content space-between
+        > :first-child
+          font-weight 500
+  .actions > button
+    padding .1em
+    background transparent
+    color #999
+  button.hola-button.font-inherit
+    font-family inherit
+    font-size inherit
 </style>

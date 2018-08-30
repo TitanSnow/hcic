@@ -81,6 +81,7 @@ const defaultConfig: Config = {
 }
 const defaultFilters: Filters = {
   css: [],
+  js: [],
 }
 
 const compressableMime = ['image/webp', 'image/jpeg']
