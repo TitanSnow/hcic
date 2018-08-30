@@ -80,32 +80,30 @@
         <config-form :config="config"/>
       </div>
       <div class="hola-card editor-detail-card">
-        <table>
-          <tbody>
-            <tr>
-              <td>Title:</td>
-              <td contenteditable="true" spellcheck="false" ref="title">{{ title }}</td>
-            </tr>
-            <tr>
-              <td>Size:</td>
-              <td class="diff">
-                <span :class="{ before: compressed }">{{ toKB(origin.size) }}KB</span>{{' '}}
-                <span v-if="compressed" class="after">{{ toKB(compressed.size) }}KB</span>
-              </td>
-            </tr>
-            <tr v-if="originWH">
-              <td>Reso:</td>
-              <td class="diff">
-                <span :class="{ before: compressedWH && !whNoChange }">{{ toReso(originWH) }}</span>{{' '}}
-                <span v-if="compressedWH && !whNoChange" class="after">{{ toReso(compressedWH )}}</span>
-              </td>
-            </tr>
-            <tr>
-              <td>Date:</td>
-              <td>{{ toDate(origin.blob.lastModified) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="hola-infosheet">
+          <div class="hola-infosheet-row">
+            <span class="hola-infosheet-key">Title</span>
+            <p class="hola-infosheet-value" contenteditable="true" spellcheck="false" ref="title">{{ title }}</p>
+          </div>
+          <div class="hola-infosheet-row">
+            <span class="hola-infosheet-key">Size</span>
+            <p class="hola-infosheet-value diff">
+              <span :class="{ before: compressed }">{{ toKB(origin.size) }}KB</span>{{' '}}
+              <span v-if="compressed" class="after">{{ toKB(compressed.size) }}KB</span>
+            </p>
+          </div>
+          <div class="hola-infosheet-row" v-if="originWH">
+            <span class="hola-infosheet-key">Reso</span>
+            <p class="hola-infosheet-value diff">
+              <span :class="{ before: compressedWH && !whNoChange }">{{ toReso(originWH) }}</span>{{' '}}
+              <span v-if="compressedWH && !whNoChange" class="after">{{ toReso(compressedWH )}}</span>
+            </p>
+          </div>
+          <div class="hola-infosheet-row">
+            <span class="hola-infosheet-key">Date</span>
+            <p class="hola-infosheet-value">{{ toDate(origin.blob.lastModified) }}</p>
+          </div>
+        </div>
       </div>
       <filter-form class="hola-card editor-filter-card" :filters="filters"/>
     </div>
@@ -408,17 +406,11 @@ diff-after()
         align-items center
         width 25%
   .editor-detail-card
-    > table > tbody > tr
-      > td:first-child
-        font-weight 600
-        width 7ch
-      > td.diff
-        > span.before
-          diff-before()
-        > span.after
-          diff-after()
-      > td
-        vertical-align baseline
+    .diff
+      > .before
+        diff-before()
+      > .after
+        diff-after()
   .editor-filter-card
     font-size .9em
 </style>
