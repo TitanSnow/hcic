@@ -74,9 +74,9 @@
         class="hola-button font-inherit"
         @click="addCSSFilter">Add Filter</button>
     </details>
-    <details>
+    <details @toggle="void ++jsFilterListKey">
       <summary>JS Filters</summary>
-      <ul class="js-filter-list">
+      <ul class="js-filter-list" :key="jsFilterListKey">
         <li v-for="f in filters.js" :key="f.key">
           <div>
             <div>'{{ f.type === 'before' ? 'Before' : 'After'}}' Filter</div>
@@ -150,6 +150,7 @@ export default class FilterForm extends Vue {
   @Prop()
   private filters!: Filters
   private readonly filterInfo = filterInfo
+  private jsFilterListKey = 0
   private addCSSFilter() {
     const argInfo = this.getCSSFilterFunctionArgInfo('blur')
     this.filters.css.push(
