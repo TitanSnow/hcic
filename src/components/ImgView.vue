@@ -174,8 +174,7 @@ class Session {
           ;(context as any).imageSmoothingQuality = config.smooth
         }
         ;(context as any).filter = this.filters.css
-          .filter(f => f.isValidFunctionName())
-          .map(f => f.cssString())
+          .map(f => f.toCssString())
           .join(' ')
         context.drawImage(bitmap, 0, 0, w, h)
         canvas.toBlob(

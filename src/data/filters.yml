@@ -1,0 +1,64 @@
+css:
+  blur:
+    args:
+      - name: radius
+        type: length
+        min: 0
+        max: 50
+        default: 0
+  brightness:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 2
+        default: 1
+  contrast:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 2
+        default: 1
+  grayscale:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 1
+        default: 0
+  hue-rotate:
+    args:
+      - name: angle
+        type: angle
+        min: 0
+        max: 360
+        default: 0
+  invert:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 1
+        default: 0
+  opacity:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 1
+        default: 1
+  saturate:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 2
+        default: 1
+  sepia:
+    args:
+      - name: amount
+        type: number
+        min: 0
+        max: 1
+        default: 0
