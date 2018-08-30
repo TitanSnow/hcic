@@ -118,8 +118,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import nanoid from 'nanoid'
 import { languages as MonacoLanguages } from 'monaco-editor'
-import Monaco from 'vue-monaco'
-import filterInfo from 'json-loader!yaml-loader!@/data/filters.yml'
+// fuck typescript
+const Monaco = require('vue-monaco')
+const filterInfo = require('json-loader!yaml-loader!@/data/filters.yml')
 
 MonacoLanguages.typescript.javascriptDefaults.addExtraLib(
   `declare var $canvas: HTMLCanvasElement
