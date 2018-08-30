@@ -117,8 +117,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import nanoid from 'nanoid'
+import { languages as MonacoLanguages } from 'monaco-editor'
 import Monaco from 'vue-monaco'
 import filterInfo from 'json-loader!yaml-loader!@/data/filters.yml'
+
+MonacoLanguages.typescript.javascriptDefaults.addExtraLib(`
+declare var $canvas: HTMLCanvasElement
+declare var $context: CanvasRenderingContext2D
+`, 'hcic.d.ts')
 
 class CSSFilter {
   constructor(
