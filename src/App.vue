@@ -169,4 +169,33 @@ export default class App extends Vue {
   user-select none
   > button
     margin auto
+
+slider-thumb()
+  appearance none
+  height 1.5em
+  width 12px
+  background-color buttonface
+  box-shadow inset 0 0 0 0 #fff
+  transition box-shadow .3s ease
+  border-radius 0
+  border 1px solid #ddd
+  box-sizing border-box
+  &:hover, &:active
+    box-shadow inset 0 0 0 1.5em hsla(0, 0%, 100%, .5)
+input[type=range].hola-form-ctrl
+  &::-webkit-slider-thumb
+    slider-thumb()
+  &::-moz-range-thumb
+    slider-thumb()
+    background var(--hola-primary-color)
+    border none
+  &::-moz-range-track
+    appearance none
+    background transparent
+  &::-moz-range-progress
+    background buttonface
+    appearance none
+    height 1.5em
+    border none
+    border-radius 0
 </style>
