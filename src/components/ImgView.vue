@@ -10,7 +10,7 @@
             class="hola-button hola-button-primary"
             type="button"
             disabled
-            v-if="compressing"><progress-circular indeterminate color="white" :size="18" :width="2"/></button>
+            v-if="compressing"><progress-circular color="white" :size="18"/></button>
           <button
             class="hola-button hola-button-primary material-icons"
             type="button"
@@ -54,7 +54,7 @@
             class="hola-button hola-button-primary"
             type="button"
             disabled
-            v-if="compressing"><progress-circular indeterminate color="white" :size="18" :width="2"/></button>
+            v-if="compressing"><progress-circular color="white" :size="18"/></button>
           <button
             class="hola-button hola-button-primary material-icons"
             type="button"
@@ -117,7 +117,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import debounce from 'lodash/debounce'
 import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
-import VProgressCircular from 'vuetify/src/components/VProgressCircular/VProgressCircular'
+import ProgressCircular from '@/components/ProgressCircular.vue'
 import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
 import { Filters, default as FilterForm } from '@/components/FilterForm.vue'
 import { shallowClone, shallowEqual } from '@/utils'
@@ -195,7 +195,7 @@ class Session {
 
 @Component({
   components: {
-    'progress-circular': VProgressCircular,
+    ProgressCircular,
     ConfigForm,
     FilterForm,
   },
@@ -360,11 +360,11 @@ diff-after()
       flex-shrink 0
       margin-left 1ch
       display flex
-      -webkit-transform translateZ(0)
       > button
-        padding 5px 10px
+        padding 0
         margin 0
         width 44px
+        height 34px
         display flex
         justify-content space-around
         align-items center
