@@ -99,7 +99,7 @@
                 @click="moveDownJSFilter(f)">arrow_downward</button>
             </div>
           </div>
-          <monaco :ref="`textarea-${f.key}`" :value="f.code" language="javascript" :options="{ lineNumbers: 'off' }" class="js-filter-editor"/>
+          <monaco :ref="`textarea-${f.key}`" :value="f.code" language="javascript" :options="{ lineNumbers: 'off', minimap: { enabled: false } }" class="js-filter-editor"/>
         </li>
       </ul>
       <button
