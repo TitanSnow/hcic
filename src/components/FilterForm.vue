@@ -121,10 +121,12 @@ import { languages as MonacoLanguages } from 'monaco-editor'
 import Monaco from 'vue-monaco'
 import filterInfo from 'json-loader!yaml-loader!@/data/filters.yml'
 
-MonacoLanguages.typescript.javascriptDefaults.addExtraLib(`
-declare var $canvas: HTMLCanvasElement
+MonacoLanguages.typescript.javascriptDefaults.addExtraLib(
+  `declare var $canvas: HTMLCanvasElement
 declare var $context: CanvasRenderingContext2D
-`, 'hcic.d.ts')
+`,
+  'hcic.d.ts'
+)
 
 class CSSFilter {
   constructor(
@@ -147,11 +149,11 @@ class JSFilter {
   }
 }
 export interface Filters {
-  css: CSSFilter[],
-  js: JSFilter[],
+  css: CSSFilter[]
+  js: JSFilter[]
 }
 
-@Component({components: {Monaco}})
+@Component({ components: { Monaco } })
 export default class FilterForm extends Vue {
   @Prop()
   private filters!: Filters
@@ -161,7 +163,8 @@ export default class FilterForm extends Vue {
     const argInfo = this.getCSSFilterFunctionArgInfo('blur')
     this.filters.css.push(
       new CSSFilter(
-        'blur', this.addCSSFilterFunctionArgUnit(argInfo.default, argInfo.type)
+        'blur',
+        this.addCSSFilterFunctionArgUnit(argInfo.default, argInfo.type)
       )
     )
   }
@@ -194,7 +197,8 @@ export default class FilterForm extends Vue {
         return x + 'px'
       case 'angle':
         return x + 'deg'
-      case 'number': default:
+      case 'number':
+      default:
         return x + ''
     }
   }
@@ -229,7 +233,9 @@ export default class FilterForm extends Vue {
     }
   }
   private updateJSFilterCode(f: JSFilter) {
-    f.code = (this.$refs[`textarea-${f.key}`] as any[])[0].getMonaco().getValue()
+    f.code = (this.$refs[`textarea-${f.key}`] as any[])[0]
+      .getMonaco()
+      .getValue()
   }
 }
 </script>
