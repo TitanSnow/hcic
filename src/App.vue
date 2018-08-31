@@ -187,7 +187,7 @@ input[type=range].hola-form-ctrl
     slider-thumb()
   &::-moz-range-thumb
     slider-thumb()
-    background var(--hola-primary-color)
+    background var(--hola-primary-color) !important
     border none
   &::-moz-range-track
     appearance none
