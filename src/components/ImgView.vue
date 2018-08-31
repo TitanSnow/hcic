@@ -17,7 +17,7 @@
             v-else
             @click="download">save_alt</button>
           <button
-            class="hola-button material-icons"
+            class="hola-button hola-button-normal material-icons"
             type="button"
             @click="close">close</button>
         </span>
@@ -61,16 +61,16 @@
             v-else
             @click="download">save_alt</button>
           <button
-            class="hola-button material-icons"
+            class="hola-button hola-button-normal material-icons"
             type="button"
             @click="close">exit_to_app</button>
           <button
-            class="hola-button material-icons"
+            class="hola-button hola-button-normal material-icons"
             type="button"
             :disabled="currentConfigHistoryIdx == 0"
             @click="undo">undo</button>
           <button
-            class="hola-button material-icons"
+            class="hola-button hola-button-normal material-icons"
             type="button"
             :disabled="currentConfigHistoryIdx == configHistory.length - 1"
             @click="redo">redo</button>

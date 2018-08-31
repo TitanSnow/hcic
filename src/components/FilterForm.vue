@@ -71,7 +71,7 @@
       </ul>
       <button
         type="button"
-        class="hola-button"
+        class="hola-button hola-button-normal"
         @click="addCSSFilter">Add Filter</button>
     </details>
   </div>

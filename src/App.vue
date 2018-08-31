@@ -11,7 +11,7 @@
               :disabled="images.length === 0"
               @click="downloadAll">Download All</button>
             <button
-              class="hola-button"
+              class="hola-button hola-button-normal"
               type="button"
               @click="clearAll">Clear All</button>
           </div>
@@ -174,7 +174,7 @@ slider-thumb()
   appearance none
   height 1.5em
   width 12px
-  background-color buttonface
+  background-color #eee
   box-shadow inset 0 0 0 0 #fff
   transition box-shadow .3s ease
   border-radius 0
@@ -193,7 +193,7 @@ input[type=range].hola-form-ctrl
     appearance none
     background transparent
   &::-moz-range-progress
-    background buttonface
+    background #eee
     appearance none
     height 1.5em
     border none
