@@ -7,5 +7,6 @@ module.exports = {
         languages: ['javascript']
       })
     ]
-  }
+  },
+  baseUrl: ''
 }
