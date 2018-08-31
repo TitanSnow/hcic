@@ -1,3 +1,10 @@
+const webpack = require('webpack')
+
 module.exports = {
-  baseUrl: ''
+  baseUrl: '',
+  configureWebpack: {
+    plugins: [
+      new webpack.IgnorePlugin(/^readable-stream$/)
+    ]
+  }
 }
