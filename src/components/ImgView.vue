@@ -113,7 +113,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import debounce from 'lodash/debounce'
-import { extension as getExtnameByMime } from 'mime-types'
 import { saveAs } from 'file-saver'
 import ProgressCircular from '@/components/ProgressCircular.vue'
 import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
@@ -187,6 +186,19 @@ class Session {
         return bitmap
       })
     })
+  }
+}
+
+function getExtnameByMime(mime: string) {
+  switch(mime) {
+    case 'image/webp':
+      return 'webp'
+    case 'image/jpeg':
+      return 'jpg'
+    case 'image/png':
+      return 'png'
+    default:
+      throw 'Unknown mime'
   }
 }
 
