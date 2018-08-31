@@ -1,21 +1,5 @@
 # hcic
 
-## Project setup
-```
-yarn install
-```
+Image Compressor based on HTML5 Canvas
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
+https://titansnow.github.io/hcic
