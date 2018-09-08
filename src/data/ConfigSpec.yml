@@ -1,0 +1,9 @@
+- name: origin
+  type: Switch
+  default: false
+- name: quality
+  type: RangeInput
+  default: 0.92
+  min: 0
+  max: 1
+  step: 0.01

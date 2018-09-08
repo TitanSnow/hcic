@@ -1,8 +1,12 @@
 import React from 'react'
 import * as Hola from './Hola'
 
+function preventDefault(e) {
+  e.preventDefault()
+}
+
 export function FormNoDefault({ children }) {
-  return <form onSubmit={e => e.preventDefault()}>{children}</form>
+  return <form onSubmit={preventDefault}>{children}</form>
 }
 
 export function Field(props) {
@@ -17,6 +21,9 @@ export function Field(props) {
 }
 
 export function RangeInput({ min, max, step, value, onChange }) {
+  function onValueChange(e) {
+    onChange(Number.parseFloat(e.target.value))
+  }
   return (
     <React.Fragment>
       <Hola.FormCtrl
@@ -25,7 +32,7 @@ export function RangeInput({ min, max, step, value, onChange }) {
         max={max}
         step={step}
         value={value}
-        onChange={onChange}
+        onChange={onValueChange}
       />
       <Hola.FormCtrl
         type="number"
@@ -33,7 +40,7 @@ export function RangeInput({ min, max, step, value, onChange }) {
         max={max}
         step={step}
         value={value}
-        onChange={onChange}
+        onChange={onValueChange}
       />
     </React.Fragment>
   )
