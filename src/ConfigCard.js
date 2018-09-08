@@ -1,6 +1,7 @@
 import React from 'react'
 import * as Hola from './Hola'
-import { FormNoDefault, Field, RangeInput } from './Form'
+import { FormNoDefault, Field, RangeInput, SelectInput } from './Form'
+import { isSupportWebP } from './features'
 
 export default function ConfigCard({ value, onChange }) {
   function handleChange(name, v) {
@@ -25,6 +26,19 @@ export default function ConfigCard({ value, onChange }) {
             step="0.01"
             value={value.scale}
             onChange={handleChange.bind(null, 'scale')}
+          />
+        </Field>
+        <Field label="Format">
+          <SelectInput
+            options={[
+              ...(isSupportWebP
+                ? [{ value: 'image/webp', label: 'WebP' }]
+                : []),
+              { value: 'image/jpeg', label: 'JPEG' },
+              { value: 'image/png', label: 'PNG' }
+            ]}
+            value={value.format}
+            onChange={handleChange.bind(null, 'format')}
           />
         </Field>
       </FormNoDefault>

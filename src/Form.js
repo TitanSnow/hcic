@@ -45,3 +45,18 @@ export function RangeInput({ min, max, step, value, onChange }) {
     </React.Fragment>
   )
 }
+
+export function SelectInput({ options, value, onChange }) {
+  function handleChange(e) {
+    onChange(e.target.value)
+  }
+  return (
+    <Hola.FormCtrl Tag="select" value={value} onChange={handleChange}>
+      {options.map(({ value, label }) => (
+        <option key={value} value={value}>
+          {label}
+        </option>
+      ))}
+    </Hola.FormCtrl>
+  )
+}

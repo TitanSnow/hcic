@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as Hola from './Hola'
 import ConfigCard from './ConfigCard'
+import { isSupportWebP } from './features'
 
 class App extends Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class App extends Component {
     this.state = {
       config: {
         quality: 0.92,
-        scale: 1
+        scale: 1,
+        format: isSupportWebP ? 'image/webp' : 'image/jpeg'
       }
     }
   }
