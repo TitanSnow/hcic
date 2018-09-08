@@ -34,6 +34,7 @@
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.0",
     "vue-template-compiler": "^2.5.17",
+    "worker-loader": "^2.0.0",
     "yaml-loader": "^0.5.0"
   }
 }

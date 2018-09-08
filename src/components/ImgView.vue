@@ -119,6 +119,8 @@ import { Config, default as ConfigForm } from '@/components/ConfigForm.vue'
 import { Filters, default as FilterForm } from '@/components/FilterForm.vue'
 import { shallowClone, shallowEqual } from '@/utils'
 
+const CompressWorker = require('worker-loader!@/worker/compress')
+
 interface ImgWH {
   readonly width: number
   readonly height: number
@@ -155,34 +157,46 @@ class Session {
   public compress(): Promise<ImgState> {
     return new Promise(resolve => {
       this.origin.bitmapPromise.then(bitmap => {
-        const canvas = document.createElement('canvas')
-        const config = this.config
-        const w = (canvas.width = Math.max(
-          1,
-          Math.round(bitmap.width * config.scale)
-        ))
-        const h = (canvas.height = Math.max(
-          1,
-          Math.round(bitmap.height * config.scale)
-        ))
-        const context = canvas.getContext('2d')!
-        if (
-          (context.imageSmoothingEnabled = config.smooth !== 'disabled') &&
-          'imageSmoothingQuality' in (context as any)
-        ) {
-          ;(context as any).imageSmoothingQuality = config.smooth
+        if ('OffscreenCanvas' in (window as any)) {
+          const worker = new CompressWorker()
+          worker.postMessage({
+            config: this.config,
+            filters: this.filters,
+            bitmap: bitmap
+          })
+          worker.onmessage = (e: any) => {
+            resolve(new ImgState(e.data as Blob))
+          }
+        } else {
+          const canvas = document.createElement('canvas')
+          const config = this.config
+          const w = (canvas.width = Math.max(
+            1,
+            Math.round(bitmap.width * config.scale)
+          ))
+          const h = (canvas.height = Math.max(
+            1,
+            Math.round(bitmap.height * config.scale)
+          ))
+          const context = canvas.getContext('2d')!
+          if (
+            (context.imageSmoothingEnabled = config.smooth !== 'disabled') &&
+            'imageSmoothingQuality' in (context as any)
+          ) {
+            ;(context as any).imageSmoothingQuality = config.smooth
+          }
+          ;(context as any).filter = this.filters.css
+            .map(f => f.toCssString())
+            .join(' ')
+          context.drawImage(bitmap, 0, 0, w, h)
+          canvas.toBlob(
+            blob => {
+              resolve(new ImgState(blob!))
+            },
+            this.config.type,
+            this.config.compress ? this.config.level : void 0
+          )
         }
-        ;(context as any).filter = this.filters.css
-          .map(f => f.toCssString())
-          .join(' ')
-        context.drawImage(bitmap, 0, 0, w, h)
-        canvas.toBlob(
-          blob => {
-            resolve(new ImgState(blob!))
-          },
-          this.config.type,
-          this.config.compress ? this.config.level : void 0
-        )
         return bitmap
       })
     })

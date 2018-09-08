@@ -5,6 +5,9 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new webpack.IgnorePlugin(/^readable-stream$/)
-    ]
+    ],
+    output: {
+      globalObject: 'this'
+    }
   }
 }
