@@ -21,7 +21,7 @@ export function Field(props) {
 }
 
 export function RangeInput({ min, max, step, value, onChange }) {
-  function onValueChange(e) {
+  function handleChange(e) {
     onChange(Number.parseFloat(e.target.value))
   }
   return (
@@ -32,7 +32,7 @@ export function RangeInput({ min, max, step, value, onChange }) {
         max={max}
         step={step}
         value={value}
-        onChange={onValueChange}
+        onChange={handleChange}
       />
       <Hola.FormCtrl
         type="number"
@@ -40,7 +40,7 @@ export function RangeInput({ min, max, step, value, onChange }) {
         max={max}
         step={step}
         value={value}
-        onChange={onValueChange}
+        onChange={handleChange}
       />
     </React.Fragment>
   )

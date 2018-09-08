@@ -3,18 +3,29 @@ import * as Hola from './Hola'
 import { FormNoDefault, Field, RangeInput } from './Form'
 
 export default function ConfigCard({ value, onChange }) {
-  function NamedRangeInput(props) {
-    const { name, ...extraProps } = props
-    function handler(v) {
-      onChange({ ...value, [name]: v })
-    }
-    return <RangeInput {...extraProps} value={value[name]} onChange={handler} />
+  function handleChange(name, v) {
+    onChange({ ...value, [name]: v })
   }
   return (
     <Hola.Card>
       <FormNoDefault>
         <Field label="Quality">
-          <NamedRangeInput name="quality" min="0" max="1" step="0.01" />
+          <RangeInput
+            min="0"
+            max="1"
+            step="0.01"
+            value={value.quality}
+            onChange={handleChange.bind(null, 'quality')}
+          />
+        </Field>
+        <Field label="Scale">
+          <RangeInput
+            min="0"
+            max="2"
+            step="0.01"
+            value={value.scale}
+            onChange={handleChange.bind(null, 'scale')}
+          />
         </Field>
       </FormNoDefault>
     </Hola.Card>
